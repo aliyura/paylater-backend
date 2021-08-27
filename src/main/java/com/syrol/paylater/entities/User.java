@@ -4,6 +4,7 @@ import com.syrol.paylater.enums.Status;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name="users")
@@ -13,7 +14,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,7 +27,9 @@ public class User{
     String email;
     @NotNull
     String gender;
+    @NotNull
     String dob;
+    @NotNull
     String bvn;
     String maritalStatus;
     String sourceOfIncome;
@@ -52,6 +55,9 @@ public class User{
     String city;
     String dp;
     String newsLetter;
+    String referralCode;
+    String accountNumber;
+    String agentId;
     @Temporal(TemporalType.TIMESTAMP)
     Date lastLoginDate;
     @Temporal(TemporalType.TIMESTAMP)

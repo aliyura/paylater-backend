@@ -44,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 "/swagger-resources/**",
                 "/swagger-ui.html**",
                 "/webjars/**",
-                "/api/v1/api-docs",
-                "favicon.ico", "/api/v1/ping", "/api/v1/test","/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification","/api/v1/user/generate/otp", "/api/v1/user/password/reset").permitAll()
+                "/api/v1/api-docs","favicon.ico", "/api/v1/ping", "/api/v1/test","/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification","/api/v1/user/generate/otp", "/api/v1/user/password/reset",
+                        "/api/v1/user/initiate_password_change","/api/v1/user/change_password").permitAll()
                 .and().requestMatchers().antMatchers("/api/**")
                 .and().authorizeRequests()
                 .antMatchers("/api/**").authenticated().and()

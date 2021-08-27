@@ -1,0 +1,239 @@
+
+Create User Request:
+http://localhost:8081/api/v1/user/signup
+
+for creating Agent
+http://localhost:8081/api/v1/agent/signup
+POST
+{
+    "name":"Rabiu Aliyu",
+    "email":"net.rabiualiyu@gmail.com",
+    "mobile":"08064160204",
+    "gender":"Male",
+    "dob":"02/04/1992",
+    "bvn":"22447611215",
+    "maritalStatus":"Married",
+    "password":"Rabs@1994",
+    "country":"Nigeria",
+    "city":"Kano"
+}
+
+
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "uiid": "fe143a6e06f711eca6502b623428c031",
+    "name": "Rabiu Aliyu",
+    "email": "net.rabiualiyu@gmail.com",
+    "gender": "Male",
+    "dob": "02/04/1992",
+    "bvn": "22447611215",
+    "maritalStatus": "Married",
+    "sourceOfIncome": null,
+    "monthlyIncome": null,
+    "employerName": null,
+    "employerAddress": null,
+    "employerTelephone": null,
+    "code": 493884,
+    "accountType": "USER",
+    "mobile": "+2348064160204",
+    "password": "$2a$10$j1XLmx3WVKpoK1qj3qlKn.TpvzNLUd9qGUhfhBxyiHmvm3ZbpvZ32",
+    "status": "PV",
+    "address": null,
+    "country": "Nigeria",
+    "city": "Kano",
+    "dp": null,
+    "newsLetter": null,
+    "referralCode": "fe25ed",
+    "accountNumber": "034157613",
+    "agentId": null,
+    "lastLoginDate": "2021-08-27T05:31:13.104+00:00",
+    "lastModifiedDate": "2021-08-27T05:31:13.277+00:00",
+    "createdDate": "2021-08-27T05:31:13.104+00:00"
+  }
+}
+
+
+Account Activation Request
+http://localhost:8081/api/v1/user/verification
+POST
+{
+    "username":"<userEmail> or <userMobileNumber>",
+    "otp":"493884"
+}
+
+
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "uiid": "fe143a6e06f711eca6502b623428c031",
+    "name": "Rabiu Aliyu",
+    "email": "net.rabiualiyu@gmail.com",
+    "gender": "Male",
+    "dob": "02/04/1992",
+    "bvn": "22447611215",
+    "maritalStatus": "Married",
+    "sourceOfIncome": null,
+    "monthlyIncome": null,
+    "employerName": null,
+    "employerAddress": null,
+    "employerTelephone": null,
+    "code": 493884,
+    "accountType": "USER",
+    "mobile": "+2348064160204",
+    "password": "$2a$10$j1XLmx3WVKpoK1qj3qlKn.TpvzNLUd9qGUhfhBxyiHmvm3ZbpvZ32",
+    "status": "AC",
+    "address": null,
+    "country": null,
+    "city": "Kano",
+    "dp": null,
+    "newsLetter": null,
+    "referralCode": "fe25ed",
+    "accountNumber": "034157613",
+    "agentId": null,
+    "lastLoginDate": "2021-08-27T05:31:13.000+00:00",
+    "lastModifiedDate": "2021-08-27T05:36:31.621+00:00",
+    "createdDate": "2021-08-27T05:31:13.000+00:00"
+  }
+}
+
+
+
+
+
+User Login
+POST
+http://localhost:8081/api/v1/user/signin
+{
+    "username":"<userEmail> or <userMobileNumber>",
+    "password":"<password>"
+}
+
+
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXQucmFiaXVhbGl5dUBnbWFpbC5jb20iLCJleHAiOjE2MzAwNzg3NTAsImlhdCI6MTYzMDA0Mjc1MH0.u5cOyG4xdw6ieu4cJ04P4Ks5B86O8BoTEIQGB_BtrQs",
+    "user": {
+      "id": 1,
+      "uiid": "fe143a6e06f711eca6502b623428c031",
+      "name": "Rabiu Aliyu",
+      "email": "net.rabiualiyu@gmail.com",
+      "gender": "Male",
+      "dob": "02/04/1992",
+      "bvn": "22447611215",
+      "maritalStatus": "Married",
+      "sourceOfIncome": null,
+      "monthlyIncome": null,
+      "employerName": null,
+      "employerAddress": null,
+      "employerTelephone": null,
+      "code": 493884,
+      "accountType": "USER",
+      "mobile": "+2348064160204",
+      "password": "*****************",
+      "status": "AC",
+      "address": null,
+      "country": null,
+      "city": "Kano",
+      "dp": null,
+      "newsLetter": null,
+      "referralCode": "fe25ed",
+      "accountNumber": "034157613",
+      "agentId": null,
+      "lastLoginDate": "2021-08-27T05:39:10.002+00:00",
+      "lastModifiedDate": "2021-08-27T05:36:32.000+00:00",
+      "createdDate": "2021-08-27T05:31:13.000+00:00"
+    }
+  }
+}
+
+
+
+Initiate Password change Request
+http://localhost:8081/api/v1/user/initiate_password_change
+POST
+{
+    "username":"net.rabiualiyu@gmail.com",
+    "password":"Rabs@1994"
+}
+
+
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": "Password change OTP sent Successfully"
+}
+
+
+
+
+Change Password Request
+http://localhost:8081/api/v1/user/change_password
+POST
+{
+    "username":"net.rabiualiyu@gmail.com",
+    "newPassword":"sdddd@1994",
+    "otp":"423512"
+}
+
+
+
+Update Profile request
+PUT
+http://localhost:8081/api/v1/user/profile/update"
+{
+    "address":"<newAddress>",
+    "city":"<newCity>",
+}
+
+
+Response:
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "uiid": "fe143a6e06f711eca6502b623428c031",
+    "name": "Rabiu Aliyu",
+    "email": "net.rabiualiyu@gmail.com",
+    "gender": "Male",
+    "dob": "02/04/1992",
+    "bvn": "22447611215",
+    "maritalStatus": "Married",
+    "sourceOfIncome": null,
+    "monthlyIncome": null,
+    "employerName": null,
+    "employerAddress": null,
+    "employerTelephone": null,
+    "code": 493884,
+    "accountType": "USER",
+    "mobile": "+2348064160204",
+    "password": "$2a$10$j1XLmx3WVKpoK1qj3qlKn.TpvzNLUd9qGUhfhBxyiHmvm3ZbpvZ32",
+    "status": "AC",
+    "address": null,
+    "country": "Nigeria",
+    "city": "Kano",
+    "dp": null,
+    "newsLetter": null,
+    "referralCode": "fe25ed",
+    "accountNumber": "034157613",
+    "agentId": null,
+    "lastLoginDate": "2021-08-27T05:31:13.104+00:00",
+    "lastModifiedDate": "2021-08-27T05:31:13.277+00:00",
+    "createdDate": "2021-08-27T05:31:13.104+00:00"
+  }
+}
+
+
+

@@ -29,22 +29,15 @@ public class MessagingService implements Serializable {
     private String smsBaseURL="http://smshub.lubredsms.com/hub/jsonsmsapi/send";
     private String username="paylater";
     private String password="BZXcpXrD";
-    private String sender="TEST";
+    private String sender="PayLaterHub";
 
-
-    public HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
-    }
 
     public APIResponse sendSMS(String recipient,String textMessage) {
         app.print("Sending SMS...");
         app.print(""+recipient);
         app.print(""+textMessage);
         try {
-            HttpEntity<String> entity = new HttpEntity<String>(this.getHeaders());
+            HttpEntity<String> entity = new HttpEntity<String>(app.getHTTPHeaders());
             ResponseEntity<String> response = rest.exchange(smsBaseURL
                             + "?user=" + username
                             + "&pass=" + password
@@ -75,7 +68,6 @@ public class MessagingService implements Serializable {
     public APIResponse generateAndSendOTP(UserRequest userRequest) {
          app.print(userRequest);
         User appUser = userRepository.findByEmail(userRequest.getUsername()).orElse(userRepository.findByMobile(userRequest.getUsername()).orElse(null));
-
         if (appUser != null) {
             Long otp=app.generateOTP();
             appUser.setCode(otp);

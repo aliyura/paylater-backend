@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class LoginResponse {
-    private String bearer;
+    private String accessToken;
     private User user;
 }

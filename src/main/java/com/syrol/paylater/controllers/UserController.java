@@ -1,5 +1,6 @@
 package com.syrol.paylater.controllers;
 import com.syrol.paylater.entities.User;
+import com.syrol.paylater.enums.AccountType;
 import com.syrol.paylater.enums.Status;
 import com.syrol.paylater.pojos.*;
 import com.syrol.paylater.services.MessagingService;
@@ -21,10 +22,14 @@ public class UserController {
     private final MessagingService messagingService;
 
     @PostMapping("/user/signup")
-    public APIResponse<User> signUp(@RequestBody User user){
-        return userService.signUp(user);
+    public APIResponse<User> signUpUser(@RequestBody User user){
+        return userService.signUp(user, AccountType.USER);
     }
 
+    @PostMapping("/agent/signup")
+    public APIResponse<User> signUpAgent(@RequestBody User user){
+        return userService.signUp(user, AccountType.AGENT);
+    }
 
     @PostMapping("/user/signin")
     public APIResponse<User> signIn(@RequestBody UserRequest loginRequest){
@@ -42,9 +47,14 @@ public class UserController {
         return userService.verifyUser(verificationRequest);
     }
 
-    @PostMapping("/user/password/reset")
-    public APIResponse<User> resetPassword(@RequestBody UserRequest userPasswordResetRequest){
-        return userService.resetPassword(userPasswordResetRequest);
+    @PostMapping("/user/initiate_password_change")
+    public APIResponse<User> initiatePasswordReset(@RequestBody UserRequest userPasswordResetRequest){
+        return userService.initiatePasswordReset(userPasswordResetRequest);
+    }
+
+    @PostMapping("/user/change_password")
+    public APIResponse<User> initiatePasswordReset(@RequestBody PasswordChangeRequest request){
+        return userService.resetPassword(request);
     }
 
     @PostMapping("/user/logout")

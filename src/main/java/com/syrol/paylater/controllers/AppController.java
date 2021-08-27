@@ -1,7 +1,10 @@
 package com.syrol.paylater.controllers;
 
 import com.syrol.paylater.pojos.APIResponse;
+import com.syrol.paylater.pojos.ZohoCreateUserRequest;
 import com.syrol.paylater.services.MessagingService;
+import com.syrol.paylater.services.ZohoService;
+import com.syrol.paylater.util.App;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 @RestController
@@ -11,6 +14,8 @@ public class AppController {
 
 
     private final MessagingService messagingService;
+    private final ZohoService zohoService;
+    private final App app;
 
     @GetMapping("/ping")
     public APIResponse<String> ping(){
@@ -18,8 +23,8 @@ public class AppController {
     }
 
     @GetMapping("/test")
-    public APIResponse<String> test(){
-        return messagingService.sendSMS("2348064160204","Hello World");
+    public APIResponse<String> test(@RequestBody ZohoCreateUserRequest request){
+        return zohoService.createUser(request);
     }
 
 

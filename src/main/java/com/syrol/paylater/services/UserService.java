@@ -1,11 +1,8 @@
 package com.syrol.paylater.services;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.AccountType;
-import com.syrol.paylater.pojos.APIResponse;
+import com.syrol.paylater.pojos.*;
 import com.syrol.paylater.enums.Status;
-import com.syrol.paylater.pojos.LoginResponse;
-import com.syrol.paylater.pojos.UserRequest;
-import com.syrol.paylater.pojos.UserVerificationRequest;
 import com.syrol.paylater.repositories.UserRepository;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.security.JwtUtil;
@@ -40,45 +37,70 @@ public class UserService implements Serializable {
     private final JwtUtil jwtUtil;
 
 
-    public APIResponse signUp(User user) {
-        User userByEmail = userRepository.findByEmail(user.getEmail()).orElse(null);
-        User userByMobile = userRepository.findByMobile(user.getMobile()).orElse(null);
-
+    public APIResponse signUp(User user, AccountType accountType) {
         if (user.getName() == null)
-            return response.failure("User Fullname Required");
+            return response.failure("User Fullname Required <name>!");
         else if (user.getEmail() == null)
-            return response.failure("Email Address Required");
-        else if (user.getPassword() == null)
-            return response.failure("User Password Required");
-        else if (userByEmail != null)
-            return response.failure("Account already exist!");
-        else if (userByMobile != null)
-            return response.failure("Account already exist!");
+            return response.failure("Email Address Required <email>!");
         else if (!app.validEmail(user.getEmail()))
-            return response.failure("Invalid Email Address!");
+            return response.failure("Invalid Email Address <email>!");
+        else if (user.getMobile()==null)
+            return response.failure("Mobile Number Required <mobile>!");
         else if (!app.validNumber(user.getMobile()))
-            return response.failure("Invalid Mobile Number!");
-        else {
-            app.print(user);
+            return response.failure("Invalid Mobile Number <mobile>!");
+        else if (user.getBvn()==null)
+            return response.failure("BVN Required <bvn>!");
+        else if (!app.validateBVN(user.getBvn()))
+            return response.failure("Invalid BVN <bvn>!");
+        else if (user.getDob()==null)
+            return response.failure("Date of Birth Required <dob>!");
+        else if (user.getGender()==null)
+            return response.failure("Gender Required <gender>!");
+        else if (user.getPassword() == null)
+            return response.failure("User Password Required <password>!");
 
-            user.setStatus(Status.PV);
-            user.setCreatedDate(new Date());
-            user.setLastLoginDate(new Date());
-            user.setUiid(app.makeUIID());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            User savedUser = userRepository.save(user);
-            if (savedUser != null) {
-                UserRequest request = new UserRequest();
-                request.setUsername(user.getMobile()!=null?user.getMobile():user.getEmail());
-                app.print("OTP Sending...");
-                APIResponse SMSResponse= messagingService.generateAndSendOTP(request);
-                app.print("OTP response...");
-                app.print(SMSResponse);
-                return response.success(savedUser);
+        else {
+
+            User userByEmail = userRepository.findByEmail(user.getEmail()).orElse(null);
+            User userByMobile = userRepository.findByMobile(user.getMobile()).orElse(null);
+            User userByBvn = userRepository.findByBvn(user.getBvn()).orElse(null);
+
+            if (userByEmail != null)
+                return response.failure("Account already exist with the Email address provided!");
+            else if (userByMobile != null)
+                return response.failure("Account already exist with the Mobile number provided!");
+            else if (userByBvn != null)
+                return response.failure("Account already exist with the BVN provided!");
+            else {
+
+                if(user.getMobile().startsWith("0")){
+                   user.setMobile(user.getMobile().replaceFirst("0","+234"));
+                }
+                app.print(user);
+
+                user.setStatus(Status.PV);
+                user.setAccountType(accountType);
+                user.setCreatedDate(new Date());
+                user.setLastLoginDate(new Date());
+                user.setUiid(app.generateRandomId());
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setReferralCode(app.generateRandomId().substring(0, 6));
+                user.setAccountNumber("0"+app.generateAccountNumber());
+
+
+                User savedUser = userRepository.save(user);
+                if (savedUser != null) {
+                    UserRequest request = new UserRequest();
+                    request.setUsername(user.getEmail() != null ? user.getEmail() : user.getMobile());
+                    app.print("OTP Sending...");
+                    APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
+                    app.print("OTP response...");
+                    app.print(SMSResponse);
+                    return response.success(savedUser);
+                } else {
+                    return response.failure("Unable to create Account!");
+                }
             }
-            else{
-                return response.failure("Unable to create Account!");
-        }
         }
     }
 
@@ -101,7 +123,7 @@ public class UserService implements Serializable {
                         LoginResponse loginResponse =new LoginResponse();
                         user.setPassword("*****************");
                         loginResponse.setUser(user);
-                        loginResponse.setBearer(
+                        loginResponse.setAccessToken(
                         "Bearer " + jwtUtil.generateToken(new org.springframework.security.core.userdetails.User(
                                 loginRequest.getUsername(), loginRequest.getPassword(), new ArrayList<>())
                         ));
@@ -150,21 +172,53 @@ public class UserService implements Serializable {
                 return response.failure("Invalid OTP");
             }
         } else {
-            return response.failure("Account not found");
+            return response.failure("Invalid Username or Password");
         }
     }
 
-    public APIResponse resetPassword(UserRequest request) {
+    public APIResponse initiatePasswordReset(UserRequest request) {
+
+        Authentication authentication = auth.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        if (authentication.isAuthenticated()) {
+            User user = userRepository.findByEmail(request.getUsername()).orElse(
+                    userRepository.findByMobile(request.getUsername()).orElse(null)
+            );
+            if (user != null) {
+                app.print("OTP Sending...");
+                APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
+                app.print("OTP response...");
+                app.print(SMSResponse);
+                return response.success("Password change OTP sent Successfully");
+
+            } else {
+                return response.failure("Invalid Username or Password");
+            }
+
+        }else{
+            return response.failure("Invalid Username or Password");
+        }
+    }
+
+
+    public APIResponse resetPassword(PasswordChangeRequest request) {
         User user = userRepository.findByEmail(request.getUsername()).orElse(
                 userRepository.findByMobile(request.getUsername()).orElse(null)
         );
         if (user != null) {
-            user.setLastModifiedDate(new Date());
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-            return response.success(userRepository.save(user));
-
+            app.print(user.getCode());
+            app.print(Long.valueOf(request.getOtp()));
+            if(user.getCode().equals(Long.valueOf(request.getOtp()))) {
+                user.setLastModifiedDate(new Date());
+                user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+                user.setCode(null);
+                return response.success(userRepository.save(user));
+            }else{
+                return response.failure("Invalid OTP");
+            }
         } else {
-            return response.failure("Account not found");
+            return response.failure("Invalid Username or Password");
         }
     }
 
@@ -173,8 +227,6 @@ public class UserService implements Serializable {
         if (user != null) {
             if (newDetails.getName() != null)
                 user.setName(newDetails.getName());
-            if (newDetails.getAccountType() != null)
-                user.setAccountType(newDetails.getAccountType());
             if (newDetails.getCountry() != null)
                 user.setCountry(newDetails.getCountry());
             if (newDetails.getCity() != null)
