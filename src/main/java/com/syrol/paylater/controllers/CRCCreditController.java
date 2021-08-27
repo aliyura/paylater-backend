@@ -20,7 +20,10 @@ public class CRCCreditController {
 
     @PostMapping("/crc/credit_check")
     public APIResponse<String> creditCheck(@Valid @RequestBody CRCBVNSearchRequest request) {
-        return crcCreditBureauService.searchBVN(request);
+        APIResponse response= crcCreditBureauService.searchBVN(request);
+        if(response.isSuccess())
+          response.setMessage("Request Successful");
+        return  response;
     }
 
 }

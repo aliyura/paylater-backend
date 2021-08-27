@@ -237,3 +237,137 @@ Response:
 
 
 
+
+BVN Validation Request
+POST
+http://localhost:8081/api/v1/bvn/validation
+{
+    "bvn":"22447611215"
+}
+Response:
+{
+  "message": "Validation Successful",
+  "success": true,
+  "payload": {
+    "BODY": {
+      "SEARCHRESULTLIST": [
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112019000138311",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "04-Feb-1992",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ABDUL ALIYU",
+          "PHONENUMBER": "08064160204",
+          "SURROGATES": {}
+        },
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112020001009814",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "02-Apr-1992",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ABDUL ALIYU",
+          "PHONENUMBER": "8064160204",
+          "SURROGATES": {}
+        },
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112020001887833",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "02-Apr-1994",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ALIYU",
+          "PHONENUMBER": "MARRIED",
+          "SURROGATES": {}
+        }
+      ]
+    },
+    "HEADER": {
+      "RESPONSETYPE": {
+        "CODE": "3",
+        "DESCRIPTION": "Response Search List "
+      }
+    },
+    "REFERENCENO": "274723844",
+    "REQUESTID": "1"
+  }
+}
+
+
+
+
+Credit Check by Customer BVN Request
+POST
+http://localhost:8081/api/v1/crc/credit_check
+{
+    "bvn":"22447611215"
+}
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "BODY": {
+      "SEARCHRESULTLIST": [
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112019000138311",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "04-Feb-1992",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ABDUL ALIYU",
+          "PHONENUMBER": "08064160204",
+          "SURROGATES": {}
+        },
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112020001009814",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "02-Apr-1992",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ABDUL ALIYU",
+          "PHONENUMBER": "8064160204",
+          "SURROGATES": {}
+        },
+        {
+          "ADDRESSES": {
+            "ADDRESS": null
+          },
+          "BUREAUID": "1112020001887833",
+          "CONFIDENCESCORE": "100",
+          "DATEOFBIRTH": "02-Apr-1994",
+          "GENDER": "Male",
+          "IDENTIFIERS": {},
+          "NAME": "RABIU ALIYU",
+          "PHONENUMBER": "MARRIED",
+          "SURROGATES": {}
+        }
+      ]
+    },
+    "HEADER": {
+      "RESPONSETYPE": {
+        "CODE": "3",
+        "DESCRIPTION": "Response Search List "
+      }
+    },
+    "REFERENCENO": "274723844",
+    "REQUESTID": "1"
+  }
+}
+

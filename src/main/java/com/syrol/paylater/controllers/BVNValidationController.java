@@ -17,7 +17,10 @@ public class BVNValidationController {
 
     @PostMapping("/bvn/validation")
     public APIResponse<String> validateVN(@Valid @RequestBody CRCBVNSearchRequest request) {
-        return crcCreditBureauService.searchBVN(request);
+        APIResponse response= crcCreditBureauService.searchBVN(request);
+        if(response.isSuccess())
+            response.setMessage("Validation Successful");
+        return  response;
     }
 
 }
