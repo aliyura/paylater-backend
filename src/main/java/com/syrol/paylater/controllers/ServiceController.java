@@ -33,22 +33,22 @@ public class ServiceController {
         return serviceService.deleteBySuid(id);
     }
 
-    @GetMapping("/service/find_by_id/{id}")
+    @GetMapping("/service/get_by_id/{id}")
     public APIResponse<PLService> findServices(@PathVariable Long id) {
         return serviceService.findById(id);
     }
 
-    @GetMapping("/service/find_by_suid/{suid}")
+    @GetMapping("/service/get_by_suid/{suid}")
     public APIResponse<List<PLService>> findServicesBySuid(@PathVariable String suid) {
         return serviceService.findBySuid(suid);
     }
 
-    @GetMapping("/service/find_by_status")
+    @GetMapping("/services/get_by_status")
     public APIResponse<List<PLService>> findServicesByStatus(@RequestParam Status status) {
         return serviceService.findByStatus(status);
     }
 
-    @GetMapping("/service/find_all")
+    @GetMapping("/services/get_all")
     public APIResponse<List<PLService>> findServices() {
         return serviceService.findAll();
     }

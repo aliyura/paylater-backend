@@ -1,24 +1,19 @@
 package com.syrol.paylater.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.JsonAdapter;
 import com.syrol.paylater.pojos.*;
-import com.syrol.paylater.retrofitservices.CRCCreditBureauServiceInterface;
 import com.syrol.paylater.retrofitservices.ZohoServiceInterface;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.UnsafeOkHttpClient;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+import retrofit2.converter.moshi.MoshiConverterFactory;
 import javax.annotation.PostConstruct;
 
 @Service
@@ -26,11 +21,20 @@ import javax.annotation.PostConstruct;
 public class ZohoService {
 
     private final App app;
+    private final com.syrol.paylater.util.Response apiResponse;
     private ZohoServiceInterface zohoServiceInterface;
     private String baseURL="https://books.zoho.com";
     private String organization="755989192";
-    private String secretKey="c8f9ab3de03272ea44205d27ebd6985f82fa22c81d";
-    OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+    private String clientId="1000.QDIKEL9A9NCYDDV5WE7BWQUP4VF6ZQ";
+    private String clientSecret="2fa4567ab1f9423745f4d8ae3af44b892a0e47d7cd";
+    private String grantType="authorization_code" ;
+    private String scope="ZohoBooks.fullaccess.all";
+    private String accessType="offline";
+    private String redirectURL="http://www.zoho.com/books";
+    private String code="1000.4915fba0a179e65234571f6c38490db4.50f1c49a382dcaf671f4d51f40d3daa4";
+    private   OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+
+
 
     @PostConstruct
     public void init() {
@@ -38,6 +42,25 @@ public class ZohoService {
                 .baseUrl(baseURL)
                 .build();
         zohoServiceInterface= retrofit.create(ZohoServiceInterface.class);
+    }
+
+    public Object getAccessToken(){
+        try {
+            app.print("#########Generating Zoho access token");
+            Response<Object> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
+            if(tokenResponseResponse.isSuccessful()){
+                app.print("Response:");
+                app.print(tokenResponseResponse.body());
+                return  tokenResponseResponse.body();
+            }
+            app.print("Response:");
+            app.print(tokenResponseResponse.headers());
+            app.print(tokenResponseResponse.code());
+        return null;
+      }catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public APIResponse createUser(ZohoCreateUserRequest request) {
@@ -48,15 +71,25 @@ public class ZohoService {
             app.print("#########Zoho Create User Request");
             app.print(apiRequest);
 
-            String authorization = String.format("Bearer %s",secretKey);
-            Response<Object> response = zohoServiceInterface.createUser(authorization, apiRequest,organization).execute();
-            app.print("#########Response:");
+           this.getAccessToken();
 
-            if (response.isSuccessful()){
-                return new APIResponse<>("Request Successful", true, response);
-            } else {
-                return new APIResponse<>("Request Failed", false, response);
-            }
+           return  null;
+
+
+//            if(accessTokenResponse!=null) {
+//
+//                String authorization = String.format("Bearer %s", accessTokenResponse.getAccess_token());
+//                Response<Object> response = zohoServiceInterface.createUser(authorization, apiRequest, organization).execute();
+//                app.print("#########Response:");
+//
+//                if (response.isSuccessful()) {
+//                    return  apiResponse.success(response);
+//                } else {
+//                    return apiResponse.failure("Failed to create user: "+response.message());
+//                }
+//            }else{
+//                return apiResponse.failure("Zoho Authentication Failed");
+//            }
         }catch (Exception ex){
             ex.printStackTrace();
             return new APIResponse<>(ex.getMessage(), false, null);

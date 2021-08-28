@@ -32,10 +32,11 @@ POST
     "mobile":"08064160204",
     "gender":"Male",
     "dob":"02/04/1992",
-    "bvn":"22447611215",
+    "bvn":"22997611215",
     "maritalStatus":"Married",
     "password":"Rabs@1994",
     "country":"Nigeria",
+    "referralCode":"<refereeUUID>", //optional
     "city":"Kano"
 }
 

@@ -183,18 +183,16 @@ public class UserService implements Serializable {
         }
     }
 
-    public APIResponse initiatePasswordReset(UserRequest request) {
+    public APIResponse initiatePasswordReset(UserInitiatePasswordChangeRequest request) {
 
-        Authentication authentication = auth.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        if (authentication.isAuthenticated()) {
             User user = userRepository.findByEmail(request.getUsername()).orElse(
                     userRepository.findByMobile(request.getUsername()).orElse(null)
             );
             if (user != null) {
                 app.print("OTP Sending...");
-                APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
+                UserRequest messageRequest=new UserRequest();
+                messageRequest.setUsername(request.getUsername());
+                APIResponse SMSResponse = messagingService.generateAndSendOTP(messageRequest);
                 app.print("OTP response...");
                 app.print(SMSResponse);
                 return response.success("Password change OTP sent Successfully");
@@ -202,10 +200,6 @@ public class UserService implements Serializable {
             } else {
                 return response.failure("Invalid Username or Password");
             }
-
-        }else{
-            return response.failure("Invalid Username or Password");
-        }
     }
 
 
@@ -219,7 +213,6 @@ public class UserService implements Serializable {
             if(user.getCode().equals(Long.valueOf(request.getOtp()))) {
                 user.setLastModifiedDate(new Date());
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-                user.setCode(null);
                 return response.success(userRepository.save(user));
             }else{
                 return response.failure("Invalid OTP");

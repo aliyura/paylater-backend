@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/user/initiate_password_change")
-    public APIResponse<User> initiatePasswordReset(@RequestBody UserRequest userPasswordResetRequest){
+    public APIResponse<User> initiatePasswordReset(@RequestBody UserInitiatePasswordChangeRequest userPasswordResetRequest){
         return userService.initiatePasswordReset(userPasswordResetRequest);
     }
 

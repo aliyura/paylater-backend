@@ -1,4 +1,6 @@
 package com.syrol.paylater.security;
+import com.syrol.paylater.entities.User;
+import com.syrol.paylater.pojos.APIResponse;
 import com.syrol.paylater.services.CustomUserDetailsService;
 import com.syrol.paylater.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -40,12 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
         http.cors().and().csrf().disable().authorizeRequests().antMatchers("/swagger-resources/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html**",
                 "/webjars/**",
                 "/api/v1/api-docs","favicon.ico", "/api/v1/ping", "/api/v1/test","/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification","/api/v1/user/generate/otp", "/api/v1/user/password/reset",
-                        "/api/v1/user/initiate_password_change","/api/v1/user/change_password").permitAll()
+                        "/api/v1/user/initiate_password_change","/api/v1/user/change_password","/api/v1/services/get_by_status","/api/v1//services/get_all").permitAll()
                 .and().requestMatchers().antMatchers("/api/**")
                 .and().authorizeRequests()
                 .antMatchers("/api/**").authenticated().and()
