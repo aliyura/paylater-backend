@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class UserService implements Serializable {
                 user.setAccountType(accountType);
                 user.setCreatedDate(new Date());
                 user.setLastLoginDate(new Date());
-                user.setUiid(app.generateRandomId());
+                user.setUuid(app.generateRandomId());
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 user.setReferralCode(app.generateRandomId().substring(0, 6));
                 user.setAccountNumber("0"+app.generateAccountNumber());
@@ -233,6 +232,25 @@ public class UserService implements Serializable {
                 user.setCity(newDetails.getCity());
             if (newDetails.getAddress() != null)
                 user.setAddress(newDetails.getAddress());
+            if (newDetails.getBankAccountName() != null)
+                user.setBankAccountName(newDetails.getBankAccountName());
+            if (newDetails.getBankAccountNumber() != null)
+                user.setBankAccountNumber(newDetails.getBankAccountNumber());
+            if (newDetails.getBankName() != null)
+                user.setBankName(newDetails.getBankName());
+            if (newDetails.getMaritalStatus() != null)
+                user.setMaritalStatus(newDetails.getMaritalStatus());
+            if (newDetails.getSourceOfIncome()!= null)
+                user.setSourceOfIncome(newDetails.getSourceOfIncome());
+            if (newDetails.getMonthlyIncome()!= null)
+                user.setMonthlyIncome(newDetails.getMonthlyIncome());
+            if (newDetails.getEmployerName()!= null)
+                user.setEmployerName(newDetails.getEmployerName());
+            if (newDetails.getEmployerAddress()!= null)
+                user.setEmployerAddress(newDetails.getEmployerAddress());
+            if (newDetails.getEmployerTelephone()!= null)
+                user.setEmployerTelephone(newDetails.getEmployerTelephone());
+
 
             if (newDetails.getMobile() != null) {
                 if(app.validNumber(newDetails.getMobile())) {
@@ -285,7 +303,7 @@ public class UserService implements Serializable {
     }
 
     public APIResponse findUserByUiid(String  uiid) {
-        User user = userRepository.findByUiid(uiid).orElse(null);
+        User user = userRepository.findByUuid(uiid).orElse(null);
         if (user != null)
             return response.success(user);
         else

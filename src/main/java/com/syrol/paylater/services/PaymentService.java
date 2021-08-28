@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+import  org.springframework.beans.factory.annotation.Value;
 import javax.annotation.PostConstruct;
 
 @RefreshScope
@@ -24,8 +24,9 @@ public class PaymentService {
     private final App app;
     private PaymentServiceInterface integrationService;
     private String baseURL="https://api.paystack.co";
-    private String secretKey="sk_test_b9bef36b197f8be4c12b908641c1d606cb467d30";
-    OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+    @Value("${spring.paylater.paystack.token}")
+    private String secretKey;
+    private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
 
     @PostConstruct
     public void init() {

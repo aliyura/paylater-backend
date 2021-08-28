@@ -20,7 +20,7 @@ public class User implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
     @NotNull
-    String uiid;
+    String uuid;
     @NotNull
     String name;
     @NotNull
@@ -58,6 +58,9 @@ public class User implements Serializable {
     String referralCode;
     String accountNumber;
     String agentId;
+    String bankAccountName;
+    String bankAccountNumber;
+    String bankName;
     @Temporal(TemporalType.TIMESTAMP)
     Date lastLoginDate;
     @Temporal(TemporalType.TIMESTAMP)

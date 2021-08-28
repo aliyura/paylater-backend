@@ -6,6 +6,7 @@ import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.UnsafeOkHttpClient;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
@@ -22,9 +23,11 @@ public class CRCCreditBureauService {
     private final App app;
     private CRCCreditBureauServiceInterface crcCreditBureauServiceInterface;
     private String baseURL="https://webserver.creditreferencenigeria.net";
-    private String  username="221sbsupp";
-    private String password="pass@1234";
-    OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+    private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
+    @Value("${spring.paylater.crc.username}")
+    private String  username;
+    @Value("${spring.paylater.crc.password}")
+    private String password;
 
     @PostConstruct
     public void init() {

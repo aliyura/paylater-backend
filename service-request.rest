@@ -1,0 +1,280 @@
+######################
+public enum ServiceTenureType {
+    MONTHLY,
+    YEARLY,
+    WEEKLY,
+    BIWEEKLY,
+    DAILY,
+}
+
+public enum Status {
+    AC, //active
+    IA, //inactive
+    PV, //pending verification
+    PA, //pending activation
+    ER, //erased
+    RJ, //rejected
+    PC, //pending confirmation
+    DP, //delivery in progress
+    PP, //pending payment
+    DV, //delivered
+}
+############################
+
+
+Add New Service Request
+POST http://localhost:8081/api/v1/service-request/add
+{
+    "suid":"36ff949907",
+    "amount":"10000",
+    "tenure":"WEEKLY",
+    "remark":" I want to pay for my House rent"
+}
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "suid": "36ff949907",
+    "uuid": "97656789079867tyut78900",
+    "sruid": "7ccb2de707e811ec9a046f952769e9ec",
+    "remark": " I want to pay for my House rent",
+    "userName": "Rabiu Aliyu",
+    "userEmail": "net.rabiualiyu@gmail.com",
+    "amount": 10000,
+    "status": "PC",
+    "tenure": "WEEKLY",
+    "lastModifiedBy": null,
+    "lastModifiedDate": "2021-08-28T10:12:44.912+00:00",
+    "createdDate": "2021-08-28T10:12:44.912+00:00"
+  }
+}
+
+
+Update Service Request
+PUT http://localhost:8081/api/v1/service-request/update_status/ccb2de707e?status=PC
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "suid": "36ff949907",
+    "uuid": "",
+    "sruid": "7ccb2de707",
+    "remark": " I want to pay for my House rent",
+    "userName": "Rabiu Aliyu",
+    "userEmail": "net.rabiualiyu@gmail.com",
+    "amount": 10000,
+    "status": "PC",
+    "tenure": "WEEKLY",
+    "lastModifiedBy": "",
+    "lastModifiedDate": "2021-08-28T10:16:06.788+00:00",
+    "createdDate": "2021-08-28T10:12:45.000+00:00"
+  }
+}
+
+
+Delete Service Request Id
+DELETE http://localhost:8081/api/v1/service-request/delete/<1id>
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": "Deleted Successfully"
+}
+
+
+
+Get Service Requests by Service Request Id
+GET http://localhost:8081/api/v1/service-request/find_by_suid/<SERVICEID>
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": [
+    {
+      "id": 2,
+      "suid": "36ff949907",
+      "uuid": "",
+      "sruid": "4a42d1b807",
+      "remark": " I want to pay for my House rent",
+      "userName": "Rabiu Aliyu",
+      "userEmail": "net.rabiualiyu@gmail.com",
+      "amount": 10000,
+      "status": "PC",
+      "tenure": "WEEKLY",
+      "lastModifiedBy": null,
+      "lastModifiedDate": "2021-08-28T10:18:30.000+00:00",
+      "createdDate": "2021-08-28T10:18:30.000+00:00"
+    }
+  ]
+}
+
+
+
+Get Service Requests by User Id
+GET http://localhost:8081/api/v1/service-request/find_by_uuid/36ff949907
+Response when no Service:
+{
+  "message": "No Service Request Found",
+  "success": false,
+  "payload": null
+}
+
+
+Get Service Requests by Tenure
+GET http://localhost:8081/api/v1/service-request/find_by_tenure?tenure=WEEKLY&page=0&size=10
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "content": [
+      {
+        "id": 2,
+        "suid": "36ff949907",
+        "uuid": "",
+        "sruid": "4a42d1b807",
+        "remark": " I want to pay for my House rent",
+        "userName": "Rabiu Aliyu",
+        "userEmail": "net.rabiualiyu@gmail.com",
+        "amount": 10000,
+        "status": "PC",
+        "tenure": "WEEKLY",
+        "lastModifiedBy": null,
+        "lastModifiedDate": "2021-08-28T10:18:30.000+00:00",
+        "createdDate": "2021-08-28T10:18:30.000+00:00"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 10,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 1,
+    "last": true,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}
+
+
+Get Service Requests by Status
+GET http://localhost:8081/api/v1/service-request/find_by_status?status=PC&page=0&size=10
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "content": [
+      {
+        "id": 2,
+        "suid": "36ff949907",
+        "uuid": "",
+        "sruid": "4a42d1b807",
+        "remark": " I want to pay for my House rent",
+        "userName": "Rabiu Aliyu",
+        "userEmail": "net.rabiualiyu@gmail.com",
+        "amount": 10000,
+        "status": "PC",
+        "tenure": "WEEKLY",
+        "lastModifiedBy": null,
+        "lastModifiedDate": "2021-08-28T10:18:30.000+00:00",
+        "createdDate": "2021-08-28T10:18:30.000+00:00"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 10,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 1,
+    "last": true,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}
+
+
+Get All Service Requests
+GET http://localhost:8081/api/v1/service-request/find_all?page=0&size=10
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "content": [
+      {
+        "id": 2,
+        "suid": "36ff949907",
+        "uuid": "",
+        "sruid": "4a42d1b807",
+        "remark": " I want to pay for my House rent",
+        "userName": "Rabiu Aliyu",
+        "userEmail": "net.rabiualiyu@gmail.com",
+        "amount": 10000,
+        "status": "PC",
+        "tenure": "WEEKLY",
+        "lastModifiedBy": null,
+        "lastModifiedDate": "2021-08-28T10:18:30.000+00:00",
+        "createdDate": "2021-08-28T10:18:30.000+00:00"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+      },
+      "offset": 0,
+      "pageNumber": 0,
+      "pageSize": 10,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 1,
+    "last": true,
+    "size": 10,
+    "number": 0,
+    "sort": {
+      "sorted": false,
+      "unsorted": true,
+      "empty": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+  }
+}

@@ -1,0 +1,266 @@
+public enum Status {
+    AC, //active
+    IA, //inactive
+    PV, //pending verification
+    PA, //pending activation
+    ER, //erased
+    RJ, //rejected
+    PC, //pending confirmation
+    DP, //delivery in progress
+    PP, //pending payment
+    DV, //delivered
+}
+############################
+
+
+
+Add New Service
+POST http://localhost:8081/api/v1/service/add
+Request:
+{
+    "title":"Test Paylater",
+    "description":"This is the kjskdjkajkdjak bkajsk ajksj kasjkajs kajsj",
+    "displayImageUrl":"https://example.com/img.jpg",
+    "min":"1",
+    "max":"1000"
+}
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "suid": "36ff949907e411ec8a956922781f5809",
+    "title": "Test Paylater",
+    "description": "This is the kjskdjkajkdjak bkajsk ajksj kasjkajs kajsj",
+    "displayImageUrl": "https://example.com/img.jpg",
+    "min": 1,
+    "max": 1000,
+    "ratings": 0,
+    "status": "AC",
+    "lastModifiedBy": null,
+    "createdBy": "o263782ewhdguiop88",
+    "createdByUsername": "net.rabiualiyu@gmail.com",
+    "lastModifiedDate": "2021-08-28T09:42:09.825+00:00",
+    "createdDate": "2021-08-28T09:42:09.825+00:00"
+  }
+}
+
+
+
+
+
+Update Service
+PUT http://localhost:8081/api/v1/service/update
+Request:
+{
+    "suid":"36ff949907",
+    "description":"This is the new description",
+    "min":"5000",
+    "max":"15000"
+}
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 1,
+    "suid": "36ff949907",
+    "title": "Test Paylater",
+    "description": "This is the new description",
+    "displayImageUrl": "https://example.com/img.jpg",
+    "min": 5000,
+    "max": 15000,
+    "ratings": 0,
+    "status": "AC",
+    "lastModifiedBy": "o263782ewhdguiop88",
+    "createdBy": "o263782ewhd",
+    "createdByUsername": "net.rabiualiyu@gmail.com",
+    "lastModifiedDate": "2021-08-28T09:47:33.162+00:00",
+    "createdDate": "2021-08-28T09:42:10.000+00:00"
+  }
+}
+
+
+
+
+Delete Service
+DELETE http://localhost:8081/api/v1/service/delete/<id>
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": "Deleted Successfully"
+}
+
+
+
+Get Service by Id
+GET http://localhost:8081/api/v1/service/find_by_id/<Id>
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 4,
+    "suid": "c668763307",
+    "title": "Test Paylater 3",
+    "description": "This is the description",
+    "displayImageUrl": "https://example.com/img.jpg",
+    "min": 1,
+    "max": 1000,
+    "ratings": 0,
+    "status": "AC",
+    "lastModifiedBy": null,
+    "createdBy": "",
+    "createdByUsername": "net.rabiualiyu@gmail.com",
+    "lastModifiedDate": "2021-08-28T10:00:29.000+00:00",
+    "createdDate": "2021-08-28T10:00:29.000+00:00"
+  }
+}
+
+
+
+Get Service by Service Id
+GET http://localhost:8081/api/v1/service/find_by_suid/<serviceUniqueId>
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "id": 4,
+    "suid": "c668763307",
+    "title": "Test Paylater 3",
+    "description": "This is the description",
+    "displayImageUrl": "https://example.com/img.jpg",
+    "min": 1,
+    "max": 1000,
+    "ratings": 0,
+    "status": "AC",
+    "lastModifiedBy": null,
+    "createdBy": "",
+    "createdByUsername": "net.rabiualiyu@gmail.com",
+    "lastModifiedDate": "2021-08-28T10:00:29.000+00:00",
+    "createdDate": "2021-08-28T10:00:29.000+00:00"
+  }
+}
+
+
+
+Get Services by Status
+GET http://localhost:8081/api/v1/service/find_by_status?status=AC
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": [
+    {
+      "id": 2,
+      "suid": "bf174af107",
+      "title": "Test Paylater 1",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:17.000+00:00",
+      "createdDate": "2021-08-28T10:00:17.000+00:00"
+    },
+    {
+      "id": 3,
+      "suid": "c1e6e5b207e",
+      "title": "Test Paylater 2",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:22.000+00:00",
+      "createdDate": "2021-08-28T10:00:22.000+00:00"
+    },
+    {
+      "id": 4,
+      "suid": "c668763307",
+      "title": "Test Paylater 3",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:29.000+00:00",
+      "createdDate": "2021-08-28T10:00:29.000+00:00"
+    }
+  ]
+}
+
+
+
+
+Get All Services
+GET http://localhost:8081/api/v1/service/find_all
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": [
+    {
+      "id": 2,
+      "suid": "bf174af107",
+      "title": "Test Paylater 1",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:17.000+00:00",
+      "createdDate": "2021-08-28T10:00:17.000+00:00"
+    },
+    {
+      "id": 3,
+      "suid": "c1e6e5b207",
+      "title": "Test Paylater 2",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:22.000+00:00",
+      "createdDate": "2021-08-28T10:00:22.000+00:00"
+    },
+    {
+      "id": 4,
+      "suid": "c668763307",
+      "title": "Test Paylater 3",
+      "description": "This is the description",
+      "displayImageUrl": "https://example.com/img.jpg",
+      "min": 1,
+      "max": 1000,
+      "ratings": 0,
+      "status": "AC",
+      "lastModifiedBy": null,
+      "createdBy": "",
+      "createdByUsername": "net.rabiualiyu@gmail.com",
+      "lastModifiedDate": "2021-08-28T10:00:29.000+00:00",
+      "createdDate": "2021-08-28T10:00:29.000+00:00"
+    }
+  ]
+}

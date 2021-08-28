@@ -60,8 +60,8 @@ public class App {
     }
     public String generateRandomId() {
         UUID referenceId = Generators.timeBasedGenerator().generate();
-        return   referenceId.toString().replaceAll("-", "");
-
+        String id= referenceId.toString().replaceAll("-", "");
+        return id.substring(id.length()/2);
     }
     public boolean validImage(String fileName)
     {

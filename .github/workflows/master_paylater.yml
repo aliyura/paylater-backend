@@ -12,7 +12,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      PAYLATER_DB_USERNAME: herbng_Paylater-user
+      PAYLATER_DB_PASSWORD: Paylater@1994
+      PAYLATER_CRC_USERNAME: 221sbsupp
+      PAYLATER_CRC_PASSWORD: pass@1234
+      PAYLATER_PAYSTACK_TOKEN: sk_test_b9bef36b197f8be4c12b908641c1d606cb467d30
+      PAYLATER_SMS_USERNAME: paylater
+      PAYLATER_SMS_PASSWORD: BZXcpXrD
+      PAYLATER_ENV: prod
     steps:
     - uses: actions/checkout@v2
 

@@ -1,3 +1,18 @@
+public enum Status {
+    AC, //active
+    IA, //inactive
+    PV, //pending verification
+    PA, //pending activation
+    ER, //erased
+    RJ, //rejected
+    PC, //pending confirmation
+    DP, //delivery in progress
+    PP, //pending payment
+    DV, //delivered
+}
+############################
+
+
 
 Create User Request:
 http://localhost:8081/api/v1/user/signup

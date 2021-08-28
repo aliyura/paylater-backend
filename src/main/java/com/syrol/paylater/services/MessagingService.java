@@ -7,6 +7,7 @@ import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,9 +28,12 @@ public class MessagingService implements Serializable {
     private RestTemplate rest;
     private final UserRepository userRepository;
     private String smsBaseURL="http://smshub.lubredsms.com/hub/jsonsmsapi/send";
-    private String username="paylater";
-    private String password="BZXcpXrD";
-    private String sender="PayLaterHub";
+    @Value("${paylater.sms.sender}")
+    private String sender;
+    @Value("${paylater.sms.username}")
+    private String username;
+    @Value("${paylater.sms.password}")
+    private String password;
 
 
     public APIResponse sendSMS(String recipient,String textMessage) {
