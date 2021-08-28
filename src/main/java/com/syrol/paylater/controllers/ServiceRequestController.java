@@ -35,31 +35,31 @@ public class ServiceRequestController {
         return serviceRequestService.deleteById(id);
     }
 
-    @GetMapping("/service-request/find_by_id/{id}")
+    @GetMapping("/service-request/get_by_id/{id}")
     public APIResponse<ServiceRequest> findService(@PathVariable Long id) {
         return serviceRequestService.findById(id);
     }
 
-    @GetMapping("/service-request/find_by_uuid/{uuid}")
+    @GetMapping("/service-request/get_by_uuid/{uuid}")
     public APIResponse<List<ServiceRequest>> findByUuid(@PathVariable String uuid) {
         return serviceRequestService.findByUuid(uuid);
     }
 
-    @GetMapping("/service-request/find_by_suid/{suid}")
+    @GetMapping("/service-request/get_by_suid/{suid}")
     public APIResponse<ServiceRequest> findBySuid(@PathVariable String suid) {
         return serviceRequestService.findBySuid(suid);
     }
 
-    @GetMapping("/service-request/find_by_status")
+    @GetMapping("/service-request/get_by_status")
     public APIResponse<Page<ServiceRequest>> findServicesByStatus(@RequestParam Status status, @RequestParam int page, @RequestParam int size) {
         return serviceRequestService.findByStatus(status, PageRequest.of(page,size));
     }
-    @GetMapping("/service-request/find_by_tenure")
+    @GetMapping("/service-request/get_by_tenure")
     public APIResponse<Page<ServiceRequest>> findByTenure(@RequestParam ServiceTenureType tenure, @RequestParam int page, @RequestParam int size) {
         return serviceRequestService.findByTenure(tenure, PageRequest.of(page,size));
     }
 
-    @GetMapping("/service-request/find_all")
+    @GetMapping("/service-request/get_all")
     public APIResponse<Page<ServiceRequest>> findServices(@RequestParam int page, @RequestParam int size) {
         return serviceRequestService.findByAll(PageRequest.of(page,size));
     }

@@ -7,6 +7,7 @@ import com.syrol.paylater.services.MessagingService;
 import com.syrol.paylater.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
@@ -79,14 +80,28 @@ public class UserController {
         return userService.updateUserStatusById(userId, status);
     }
 
-    @GetMapping("/get_user_by_uiid/{uiid}")
-    public APIResponse<List<User>> getUserByUiid(@PathVariable String uiid){
+    @GetMapping("/user/get_by_uiid/{uiid}")
+    public APIResponse<User> getUserByUiid(@PathVariable String uiid){
         return userService.findUserByUiid(uiid);
     }
 
 
-    @GetMapping("/get_users_by_account_type")
-    public APIResponse<List<User>> getUsersByAccountType(@RequestParam String type, @RequestParam int page, @RequestParam int size){
+    @GetMapping("/users/get_by_account_type")
+    public APIResponse<Page<User>> getUsersByAccountType(@RequestParam String type, @RequestParam int page, @RequestParam int size){
         return userService.findUsersByAccountType(PageRequest.of(page,size),type);
+    }
+
+    @GetMapping("/users/get_by_status")
+    public APIResponse<Page<User>> getUsersByStatus(@RequestParam Status status, @RequestParam int page, @RequestParam int size){
+        return userService.findUsersByStatus(PageRequest.of(page,size),status);
+    }
+    @GetMapping("/users/get_by_referee_uuid/{uuid}")
+    public APIResponse<Page<User>> getUsersReferred(@PathVariable String uuid, @RequestParam int page, @RequestParam int size){
+        return userService.findAllUsersReferred(PageRequest.of(page,size),uuid);
+    }
+
+    @GetMapping("/users/get_all")
+    public APIResponse<Page<User>> getAll(@PathVariable String uuid, @RequestParam int page, @RequestParam int size){
+        return userService.findAllUsersReferred(PageRequest.of(page,size),uuid);
     }
 }

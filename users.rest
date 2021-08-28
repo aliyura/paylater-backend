@@ -12,7 +12,13 @@ public enum Status {
 }
 ############################
 
+Get Users Endpoints
+GET http://localhost:8081/api/v1/users/get_by_account_type?type=USER&page=0&size=10
+GET http://localhost:8081/api/v1/users/get_by_status?status=AC&page=0&size=10
+GET http://localhost:8081/api/v1/users/get_by_referee_uuid/uy7sya78s7a?page=0&size=10
+GET http://localhost:8081/api/v1/users/get_all?page=0&size=10
 
+#######################
 
 Create User Request:
 http://localhost:8081/api/v1/user/signup
@@ -385,4 +391,3 @@ Response:
     "REQUESTID": "1"
   }
 }
-

@@ -80,4 +80,9 @@
     <changeSet author="aliyura (generated)" id="1630141157323-7">
         <dropColumn columnName="uiid" tableName="users"/>
     </changeSet>
+    <changeSet author="aliyura (generated)" id="1630158561962-1">
+        <addColumn tableName="users">
+            <column name="referred" type="bigint"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

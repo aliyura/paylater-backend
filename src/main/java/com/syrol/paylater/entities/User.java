@@ -56,6 +56,7 @@ public class User implements Serializable {
     String dp;
     String newsLetter;
     String referralCode;
+    Long referred;
     String accountNumber;
     String agentId;
     String bankAccountName;

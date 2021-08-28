@@ -96,7 +96,7 @@ Response:
 
 
 Get Service by Id
-GET http://localhost:8081/api/v1/service/find_by_id/<Id>
+GET http://localhost:8081/api/v1/service/get_by_id/<Id>
 Response:
 {
   "message": "Request Successful",
@@ -122,7 +122,7 @@ Response:
 
 
 Get Service by Service Id
-GET http://localhost:8081/api/v1/service/find_by_suid/<serviceUniqueId>
+GET http://localhost:8081/api/v1/service/get_by_suid/<serviceUniqueId>
 Response:
 {
   "message": "Request Successful",
@@ -148,7 +148,7 @@ Response:
 
 
 Get Services by Status
-GET http://localhost:8081/api/v1/service/find_by_status?status=AC
+GET http://localhost:8081/api/v1/services/get_by_status?status=AC
 Response:
 {
   "message": "Request Successful",
@@ -209,7 +209,7 @@ Response:
 
 
 Get All Services
-GET http://localhost:8081/api/v1/service/find_all
+GET http://localhost:8081/api/v1/services/get_all
 {
   "message": "Request Successful",
   "success": true,

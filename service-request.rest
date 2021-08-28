@@ -88,7 +88,7 @@ Response:
 
 
 Get Service Requests by Service Request Id
-GET http://localhost:8081/api/v1/service-request/find_by_suid/<SERVICEID>
+GET http://localhost:8081/api/v1/service-request/get_by_suid/<SERVICEID>
 Response:
 {
   "message": "Request Successful",
@@ -115,7 +115,7 @@ Response:
 
 
 Get Service Requests by User Id
-GET http://localhost:8081/api/v1/service-request/find_by_uuid/36ff949907
+GET http://localhost:8081/api/v1/service-request/get_by_uuid/36ff949907
 Response when no Service:
 {
   "message": "No Service Request Found",
@@ -125,7 +125,7 @@ Response when no Service:
 
 
 Get Service Requests by Tenure
-GET http://localhost:8081/api/v1/service-request/find_by_tenure?tenure=WEEKLY&page=0&size=10
+GET http://localhost:8081/api/v1/service-request/get_by_tenure?tenure=WEEKLY&page=0&size=10
 {
   "message": "Request Successful",
   "success": true,
@@ -177,7 +177,7 @@ GET http://localhost:8081/api/v1/service-request/find_by_tenure?tenure=WEEKLY&pa
 
 
 Get Service Requests by Status
-GET http://localhost:8081/api/v1/service-request/find_by_status?status=PC&page=0&size=10
+GET http://localhost:8081/api/v1/service-request/get_by_status?status=PC&page=0&size=10
 {
   "message": "Request Successful",
   "success": true,
@@ -229,7 +229,7 @@ GET http://localhost:8081/api/v1/service-request/find_by_status?status=PC&page=0
 
 
 Get All Service Requests
-GET http://localhost:8081/api/v1/service-request/find_all?page=0&size=10
+GET http://localhost:8081/api/v1/service-request/get_all?page=0&size=10
 {
   "message": "Request Successful",
   "success": true,

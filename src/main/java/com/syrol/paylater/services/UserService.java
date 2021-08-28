@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -75,16 +74,25 @@ public class UserService implements Serializable {
                 if(user.getMobile().startsWith("0")){
                    user.setMobile(user.getMobile().replaceFirst("0","+234"));
                 }
-                app.print(user);
-
                 user.setStatus(Status.PV);
                 user.setAccountType(accountType);
                 user.setCreatedDate(new Date());
                 user.setLastLoginDate(new Date());
                 user.setUuid(app.generateRandomId());
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                user.setReferralCode(app.generateRandomId().substring(0, 6));
                 user.setAccountNumber("0"+app.generateAccountNumber());
+                user.setReferred(0l);
+
+                if(user.getReferralCode()!=null) {
+                    User referee = userRepository.findByUuid(user.getReferralCode()).orElse(null);
+                    if(referee!=null) {
+                        referee.setReferred(referee.getReferred() + 1);
+                        referee.setLastModifiedDate(new Date());
+                        userRepository.save(referee);
+                    }else{
+                        return  response.failure("Invalid Referral Code");
+                    }
+                }
 
 
                 User savedUser = userRepository.save(user);
@@ -273,6 +281,7 @@ public class UserService implements Serializable {
           return  response.failure("Account not found");
         }
     }
+
     public APIResponse updateUserStatusById(Long userId, Status status) {
         User user=userRepository.findById(userId).orElse(null);
         if (user != null) {
@@ -284,6 +293,7 @@ public class UserService implements Serializable {
         }
     }
 
+
     public APIResponse findUsersByAccountType(Pageable pageable,String  type){
         AccountType requestedType=null;
         try {
@@ -292,14 +302,21 @@ public class UserService implements Serializable {
             ex.printStackTrace();
         }
         if(requestedType!=null) {
-            Page<List<User>> userList = userRepository.findAllByAccountType(pageable, requestedType);
-            if (!userList.isEmpty())
+            Page<User> userList = userRepository.findAllByAccountType(pageable, requestedType);
+            if (userList!=null)
                 return response.success(userList);
             else
-                return response.failure("No  Account found from " + type.toLowerCase() + "");
+                return response.failure("No  User found");
         }else{
             return  response.failure("No ("+type+") found as an Account type");
         }
+    }
+    public APIResponse findUsersByStatus(Pageable pageable,Status status) {
+        Page<User> userList = userRepository.findByStatus(pageable, status);
+        if (userList != null)
+            return response.success(userList);
+        else
+            return response.failure("No  User found");
     }
 
     public APIResponse findUserByUiid(String  uiid) {
@@ -309,10 +326,30 @@ public class UserService implements Serializable {
         else
             return response.failure("User not found");
     }
+
     public APIResponse deleteUerById(Long userId){
         User user = userRepository.findById(userId).orElse(null);
         if(user!=null)
           userRepository.deleteById(userId);
         return response.success(user);
+    }
+
+
+    public APIResponse findAllUsersReferred(Pageable page,String uuid) {
+        Page<User> users =userRepository.findByReferralCode(page, uuid);
+        if (users != null) {
+            return   response.success(users);
+        }else{
+            return  response.failure("No User Referred");
+        }
+    }
+
+    public APIResponse findAll(Pageable page) {
+        Page<User> users =userRepository.findAll(page);
+        if (users != null) {
+            return   response.success(users);
+        }else{
+            return  response.failure("No User Available");
+        }
     }
 }
