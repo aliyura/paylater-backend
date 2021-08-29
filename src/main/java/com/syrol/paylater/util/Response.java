@@ -9,6 +9,10 @@ public class Response<T> {
         return new APIResponse<T>("Request Successful", true, payload);
     }
 
+    public APIResponse<T> fail(T payload) {
+        return new APIResponse<T>("Request Failed", false, payload);
+    }
+
     public APIResponse<String> failure(String message) {
         return new APIResponse<String>(message, false,null);
     }

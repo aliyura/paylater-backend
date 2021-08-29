@@ -16,9 +16,14 @@ public class AuthDetails {
     private final UserRepository userRepository;
 
     public User getAuthorizedUser(Principal principal){
-        final UserDetails currentUser = (UserDetails) ((Authentication) principal).getPrincipal();
-        return  userRepository.findByEmail(currentUser.getUsername()).orElse(
-                userRepository.findByMobile(currentUser.getUsername()).orElse(null)
-        );
+        if(principal!=null) {
+            final UserDetails currentUser = (UserDetails) ((Authentication) principal).getPrincipal();
+            return userRepository.findByEmail(currentUser.getUsername()).orElse(
+                    userRepository.findByMobile(currentUser.getUsername()).orElse(null)
+            );
+        }
+        else{
+            return  null;
+        }
     }
 }

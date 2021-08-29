@@ -1,0 +1,126 @@
+
+#Initiate Direct Debit Request
+POST
+http://localhost:8081/api/v1/direct-debit/initiate
+Request:
+{
+      "payerName":"Chinedu Test",
+      "payerEmail":"test@example.com",
+      "payerPhone":"08012345035",
+      "payerBankCode":"232",
+      "payerAccount":"2110206556",
+      "amount":600,
+      "startDate":"29/08/2021",
+      "endDate":"30/09/2021",
+      "mandateType":"DD",
+      "maxNoOfDebits": "6"
+}
+Response:
+{
+  "message": "Request Successful",
+  "success": true,
+  "payload": {
+    "statuscode": "040",
+    "requestId": "dd11eca60d2dfdabdd091f",
+    "mandateId": "280008239670",
+    "status": "Initail Request OK"
+  }
+}
+
+
+
+#Get all Debit
+http://localhost:8081/api/v1/direct-debit/get_all
+GET
+
+
+#Get all Debit History of a transaction
+http://localhost:8081/api/v1/direct-debit/history?mandateId=<mandateId>&requestId=<requestId>
+GET
+
+
+
+
+
+
+#Send  Direct Debit Instruction Request
+POST
+http://localhost:8081/api/v1/direct-debit/run
+Request:
+{
+      "totalAmount":600,
+      "mandateId":"280008239670",
+      "fundingAccount":"0035509366",
+      "fundingBankCode":"057"
+}
+
+Response:
+{
+  "message": "Request Failed",
+  "success": false,
+  "payload": {
+    "statuscode": "061",
+    "requestId": null,
+    "mandateId": null,
+    "status": "Mandate Not Activated"
+  }
+}
+
+
+
+http://localhost:8081/api/v1/direct-debit/cancel
+#Cancel Debit Instruction Request
+POST
+Request:
+{
+      "mandateId":"280008239670",
+      "transactionRef":"12345",
+      "requestId":"dd11eca60d2dfdabdd091f"
+}
+
+
+
+
+
+#Direct Direct Status
+http://localhost:8081/api/v1/direct-debit/status?mandateId=<mandateId>&requestId=<requestId>
+GET
+Request:
+{
+      "mandateId":"280008239670",
+      "requestId":"dd11eca60d2dfdabdd091f"
+}
+
+Response:
+{
+  "message": "Request Failed",
+  "success": false,
+  "payload": {
+    "statuscode": "020",
+    "requestId": null,
+    "mandateId": null,
+    "status": "Invalid User Authentication"
+  }
+}
+
+
+#Get Direct Debit History
+GET
+http://localhost:8081/api/v1/direct-debit/history?mandateId=280008239670&requestId=dd11eca60d2dfdabdd091f
+{
+  "message": "Request Successfull",
+  "success": true,
+  "payload": {
+    "statuscode": "074",
+    "requestId": "dd11eca60d2dfdabdd091f",
+    "mandateId": "280008239670",
+    "status": "NO AVAILABLE RECORD",
+    "data": [
+      {
+        "data": {
+          "paymentDetails": []
+        }
+      }
+    ]
+  }
+}

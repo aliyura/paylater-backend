@@ -80,7 +80,7 @@ public class UserService implements Serializable {
                 user.setLastLoginDate(new Date());
                 user.setUuid(app.generateRandomId());
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                user.setAccountNumber("0"+app.generateAccountNumber());
+                user.setAccountNumber("0456789");
                 user.setReferred(0l);
 
                 if(user.getReferralCode()!=null) {

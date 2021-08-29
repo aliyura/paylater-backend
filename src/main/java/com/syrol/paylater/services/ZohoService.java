@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 import javax.annotation.PostConstruct;
 
 @Service
@@ -32,6 +31,7 @@ public class ZohoService {
     private String accessType="offline";
     private String redirectURL="http://www.zoho.com/books";
     private String code="1000.4915fba0a179e65234571f6c38490db4.50f1c49a382dcaf671f4d51f40d3daa4";
+    private  String accessToken="1000.7d4c8f5bd82e3588543fa03e259d3255.f2b8d419cfa3279f2d6c135df708ec90";
     private   OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
 
 
@@ -44,10 +44,10 @@ public class ZohoService {
         zohoServiceInterface= retrofit.create(ZohoServiceInterface.class);
     }
 
-    public Object getAccessToken(){
+    public ZohoTokenResponse getAccessToken(){
         try {
             app.print("#########Generating Zoho access token");
-            Response<Object> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
+            Response<ZohoTokenResponse> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
             if(tokenResponseResponse.isSuccessful()){
                 app.print("Response:");
                 app.print(tokenResponseResponse.body());
@@ -65,37 +65,28 @@ public class ZohoService {
 
     public APIResponse createUser(ZohoCreateUserRequest request) {
         try {
-
-            ZohoRequest apiRequest = new ZohoRequest();
-            apiRequest.setJSONString(app.toString(request));
             app.print("#########Zoho Create User Request");
-            app.print(apiRequest);
+            app.print(request);
+            String authorization = String.format("Bearer %s",accessToken);
+            Response<ZohoResponse> createUserResponse = zohoServiceInterface.createUser(authorization,request,organization).execute();
+            app.print(createUserResponse);
+            app.print(createUserResponse.code());
+            if(createUserResponse.isSuccessful()){
+                app.print("Response:");
+                app.print(createUserResponse.body());
+                return  apiResponse.success(createUserResponse);
+            }
+            else{
+                return apiResponse.failure(createUserResponse.message());
+            }
 
-           this.getAccessToken();
-
-           return  null;
-
-
-//            if(accessTokenResponse!=null) {
-//
-//                String authorization = String.format("Bearer %s", accessTokenResponse.getAccess_token());
-//                Response<Object> response = zohoServiceInterface.createUser(authorization, apiRequest, organization).execute();
-//                app.print("#########Response:");
-//
-//                if (response.isSuccessful()) {
-//                    return  apiResponse.success(response);
-//                } else {
-//                    return apiResponse.failure("Failed to create user: "+response.message());
-//                }
-//            }else{
-//                return apiResponse.failure("Zoho Authentication Failed");
-//            }
         }catch (Exception ex){
             ex.printStackTrace();
-            return new APIResponse<>(ex.getMessage(), false, null);
+            return apiResponse.failure(ex.getMessage());
         }
-
     }
+
+
 //
 //    public APIResponse updateUser(String userId,ZohoCreateUserRequest request) {
 //

@@ -12,7 +12,7 @@ public class DirectDebitRequest<T> {
     String payerBankCode;
     String payerAccount;
     String requestId;
-    double amount;
+    Long amount;
     String mandateType;
     int maxNoOfDebits;
     String startDate;
