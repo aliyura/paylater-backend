@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInitiatePasswordChangeRequest<T> {
+public class UserCredRequest<T> {
     private String username;
+    private String password;
 }

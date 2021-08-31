@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -33,14 +32,22 @@ public class UserController {
     }
 
     @PostMapping("/user/signin")
-    public APIResponse<User> signIn(@RequestBody UserRequest loginRequest){
+    public APIResponse<User> signIn(@RequestBody UserCredRequest loginRequest){
         return userService.signIn(loginRequest);
     }
-
 
     @PostMapping("/user/generate/otp")
     public APIResponse<User> generateOTP(@RequestBody UserRequest userRequest){
         return messagingService.generateAndSendOTP(userRequest);
+    }
+
+    @PostMapping("user/verify/phone_number")
+    public APIResponse<User> validatePhoneNumber(@RequestBody UserRequest userRequest){
+        return messagingService.generateAndSendOTPWithoutAuth(userRequest);
+    }
+    @PostMapping("user/validate/otp")
+    public APIResponse<User> VerifyPhoneNumber(@RequestBody UserVerificationRequest verificationRequest){
+        return messagingService.verifyOTPWithoutAuth(verificationRequest);
     }
 
     @PostMapping("/user/verification")
@@ -49,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/user/initiate_password_change")
-    public APIResponse<User> initiatePasswordReset(@RequestBody UserInitiatePasswordChangeRequest userPasswordResetRequest){
+    public APIResponse<User> initiatePasswordReset(@RequestBody UserRequest userPasswordResetRequest){
         return userService.initiatePasswordReset(userPasswordResetRequest);
     }
 

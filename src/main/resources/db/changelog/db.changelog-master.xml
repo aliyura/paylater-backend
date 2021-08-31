@@ -6,4 +6,6 @@
      <include  file="db/changelog/dbo.users.changelog.xml"/>
      <include  file="db/changelog/dbo.services.changelog.xml"/>
      <include  file="db/changelog/dbo.service-requests.changelog.xml"/>
+     <include  file="db/changelog/dbo.verification-requests.changelog.xml"/>
+     <include  file="db/changelog/dbo.direct-debits.changelog.xml"/>
 </databaseChangeLog>

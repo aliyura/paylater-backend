@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRequest<T> {
     private String username;
-    private String password;
 }

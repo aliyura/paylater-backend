@@ -111,10 +111,13 @@ public class UserService implements Serializable {
         }
     }
 
-    public APIResponse signIn(UserRequest loginRequest) {
+    public APIResponse signIn(UserCredRequest loginRequest) {
 
         app.print(loginRequest);
         try {
+            if(loginRequest.getUsername().startsWith("0") && app.validNumber(loginRequest.getUsername())){
+                loginRequest.setUsername(loginRequest.getUsername().replaceFirst("0","+234"));
+            }
             Authentication authentication = auth.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
@@ -162,6 +165,9 @@ public class UserService implements Serializable {
     }
 
     public APIResponse verifyUser(UserVerificationRequest request) {
+        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
+            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        }
         User user = userRepository.findByMobile(request.getUsername()).orElse(
                 userRepository.findByEmail(request.getUsername()).orElse(null)
         );
@@ -183,16 +189,19 @@ public class UserService implements Serializable {
         }
     }
 
-    public APIResponse initiatePasswordReset(UserInitiatePasswordChangeRequest request) {
+    public APIResponse initiatePasswordReset(UserRequest request) {
 
+        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
+            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        }
             User user = userRepository.findByEmail(request.getUsername()).orElse(
                     userRepository.findByMobile(request.getUsername()).orElse(null)
             );
             if (user != null) {
                 app.print("OTP Sending...");
-                UserRequest messageRequest=new UserRequest();
-                messageRequest.setUsername(request.getUsername());
-                APIResponse SMSResponse = messagingService.generateAndSendOTP(messageRequest);
+                UserRequest userRequest=new UserRequest();
+                userRequest.setUsername(request.getUsername());
+                APIResponse SMSResponse = messagingService.generateAndSendOTP(userRequest);
                 app.print("OTP response...");
                 app.print(SMSResponse);
                 return response.success("Password change OTP sent Successfully");
@@ -204,6 +213,9 @@ public class UserService implements Serializable {
 
 
     public APIResponse resetPassword(PasswordChangeRequest request) {
+        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
+            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        }
         User user = userRepository.findByEmail(request.getUsername()).orElse(
                 userRepository.findByMobile(request.getUsername()).orElse(null)
         );
