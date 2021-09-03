@@ -1,4 +1,4 @@
-package com.syrol.paylater.pojos;
+package com.syrol.paylater.pojos.zoho;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

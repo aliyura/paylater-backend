@@ -1,4 +1,4 @@
-package com.syrol.paylater.pojos;
+package com.syrol.paylater.pojos.zoho;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ZohoResponse {
-    private String code;
+    private int code;
     private String message;
 }

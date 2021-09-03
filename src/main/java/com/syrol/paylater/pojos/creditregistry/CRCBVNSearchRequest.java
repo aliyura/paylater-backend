@@ -1,4 +1,4 @@
-package com.syrol.paylater.pojos;
+package com.syrol.paylater.pojos.creditregistry;
 import lombok.Data;
 
 @Data

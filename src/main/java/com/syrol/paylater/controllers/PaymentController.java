@@ -1,13 +1,12 @@
 package com.syrol.paylater.controllers;
 
 import com.syrol.paylater.pojos.APIResponse;
-import com.syrol.paylater.pojos.PaymentRequest;
+import com.syrol.paylater.pojos.paystack.PaymentRequest;
 import com.syrol.paylater.services.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @AllArgsConstructor

@@ -1,9 +1,9 @@
-package com.syrol.paylater.pojos;
+package com.syrol.paylater.pojos.remita;
 
 import lombok.Data;
 
 @Data
-public class DirectDebitStatusRequest<T> {
+public class DirectDebitHistoryRequest<T> {
     private String merchantId;
     private String mandateId;
     private String hash;

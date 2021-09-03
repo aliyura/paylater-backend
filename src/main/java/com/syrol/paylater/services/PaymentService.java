@@ -1,8 +1,8 @@
 package com.syrol.paylater.services;
 
 import com.syrol.paylater.pojos.APIResponse;
-import com.syrol.paylater.pojos.PaymentRequest;
-import com.syrol.paylater.pojos.PaymentResponse;
+import com.syrol.paylater.pojos.paystack.PaymentRequest;
+import com.syrol.paylater.pojos.paystack.PaymentResponse;
 import com.syrol.paylater.retrofitservices.PaymentServiceInterface;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.UnsafeOkHttpClient;

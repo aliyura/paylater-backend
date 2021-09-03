@@ -1,4 +1,4 @@
-package com.syrol.paylater.pojos;
+package com.syrol.paylater.pojos.remita;
 import lombok.Data;
 
 import java.util.List;

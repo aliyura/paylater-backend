@@ -1,6 +1,7 @@
 package com.syrol.paylater.controllers;
 
 import com.syrol.paylater.pojos.*;
+import com.syrol.paylater.pojos.remita.*;
 import com.syrol.paylater.services.RemitaService;
 import com.syrol.paylater.util.Response;
 import lombok.AllArgsConstructor;

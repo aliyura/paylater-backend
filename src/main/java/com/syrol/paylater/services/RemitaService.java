@@ -3,6 +3,7 @@ import com.syrol.paylater.entities.DirectDebit;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.Status;
 import com.syrol.paylater.pojos.*;
+import com.syrol.paylater.pojos.remita.*;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.AppHttpClient;
 import com.syrol.paylater.util.AuthDetails;
@@ -181,7 +182,7 @@ public class RemitaService {
         }
     }
 
-    public APIResponse sendDebitInstruction(Principal principal,DirectDebitInstructionRequest request){
+    public APIResponse sendDebitInstruction(Principal principal, DirectDebitInstructionRequest request){
         try {
             if (request.getMandateId() == null)
                 return  apiResponse.failure("Mandate Id Required <mandateId>!");
@@ -239,7 +240,7 @@ public class RemitaService {
 
     }
 
-    public APIResponse cancelDebitInstruction(Principal principal,DirectDebitCancelInstructionRequest request){
+    public APIResponse cancelDebitInstruction(Principal principal, DirectDebitCancelInstructionRequest request){
         try {
             if (request.getRequestId() == null)
                 return  apiResponse.failure("Request Id Required <requestId>!");

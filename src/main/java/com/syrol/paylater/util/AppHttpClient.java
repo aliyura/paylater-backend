@@ -1,8 +1,5 @@
 package com.syrol.paylater.util;
-import aj.org.objectweb.asm.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.syrol.paylater.pojos.DirectDebitRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
