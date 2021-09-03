@@ -5,12 +5,10 @@ public enum Status {
     IA,
     PV,
     PA,
-    ER,
-    RJ,
     PC,
     DP,
     PP,
     DV,
-    OS,
-    OC
+    CO,
+    CA,
 }
