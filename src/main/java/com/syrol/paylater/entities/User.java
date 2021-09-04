@@ -19,6 +19,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
+    String contactId;
     @NotNull
     String uuid;
     @NotNull

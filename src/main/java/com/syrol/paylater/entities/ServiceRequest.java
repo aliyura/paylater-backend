@@ -31,9 +31,11 @@ public class ServiceRequest implements Serializable {
     @Column(columnDefinition="TEXT")
     String remark;
     String userName;
+    String orderReference;
     String userEmail;
     @NotNull
-    Long amount;
+    Double amount;
+    Double clearedAmount;
     @NotNull
     @Enumerated(EnumType.STRING)
     Status status;

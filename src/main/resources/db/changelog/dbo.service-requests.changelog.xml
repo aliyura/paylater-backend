@@ -31,4 +31,14 @@
             <column name="last_modified_date" type="datetime"/>
         </createTable>
     </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-5">
+        <addColumn tableName="service_request">
+            <column name="cleared_amount" type="double precision"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-8">
+        <addColumn tableName="service_request">
+            <column name="order_reference" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -1,16 +1,16 @@
 package com.syrol.paylater.retrofitservices;
-import com.syrol.paylater.pojos.PaymentRequest;
-import com.syrol.paylater.pojos.PaymentResponse;
+import com.syrol.paylater.pojos.paystack.PaymentInitializeRequest;
+import com.syrol.paylater.pojos.paystack.PaymentVerificationResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
 
 public interface PaymentServiceInterface {
 
     @POST("transaction/initialize")
-    Call<PaymentResponse> initializePayment(@Header("Authorization") String token, @Body PaymentRequest request);
+    Call<PaymentVerificationResponse> initializePayment(@Header("Authorization") String token, @Body PaymentInitializeRequest request);
 
     @GET("transaction/verify/{reference}")
-    Call<PaymentResponse> verifyPayment(@Header("Authorization") String token, @Path(value="reference") String reference);
+    Call<PaymentVerificationResponse> verifyPayment(@Header("Authorization") String token, @Path(value="reference") String reference);
 
 
 }

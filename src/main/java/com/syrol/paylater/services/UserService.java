@@ -1,8 +1,11 @@
 package com.syrol.paylater.services;
+import com.syrol.paylater.entities.ActivityLog;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.AccountType;
 import com.syrol.paylater.pojos.*;
 import com.syrol.paylater.enums.Status;
+import com.syrol.paylater.pojos.zoho.ZohoContact;
+import com.syrol.paylater.pojos.zoho.ZohoContactRequest;
 import com.syrol.paylater.repositories.UserRepository;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.security.JwtUtil;
@@ -31,9 +34,10 @@ public class UserService implements Serializable {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MessagingService messagingService;
+    private  final ZohoContactService zohoContactService;
+    private  final  ActivityLogService logService;
     private final AuthenticationManager auth;
     private final JwtUtil jwtUtil;
-
 
     public APIResponse signUp(User user, AccountType accountType) {
         if (user.getName() == null)
@@ -95,17 +99,32 @@ public class UserService implements Serializable {
                 }
 
 
-                User savedUser = userRepository.save(user);
-                if (savedUser != null) {
-                    UserRequest request = new UserRequest();
-                    request.setUsername(user.getEmail() != null ? user.getEmail() : user.getMobile());
-                    app.print("OTP Sending...");
-                    APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
-                    app.print("OTP response...");
-                    app.print(SMSResponse);
-                    return response.success(savedUser);
-                } else {
-                    return response.failure("Unable to create Account!");
+                ZohoContactRequest contact = new ZohoContactRequest();
+                contact.setContact_name(user.getName());
+                contact.setPhone(user.getMobile());
+                contact.setEmail(user.getEmail());
+                contact.setCompany_name("Paylater");
+                app.print("Creating new Zoho Contact ");
+                app.print(contact);
+                APIResponse<ZohoContact> contactResponse=zohoContactService.createContact(contact);
+
+                if(contactResponse.isSuccess()) {
+                    app.print("User created on Zoho");
+                    user.setContactId(contactResponse.getPayload().getContact_id());
+                    User savedUser = userRepository.save(user);
+                    if (savedUser != null) {
+                        UserRequest request = new UserRequest();
+                        request.setUsername(user.getEmail() != null ? user.getEmail() : user.getMobile());
+                        app.print("OTP Sending...");
+                        APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
+                        app.print("OTP response...");
+                        app.print(SMSResponse);
+                        return response.success(savedUser);
+                    } else {
+                        return response.failure("Unable to create Account!");
+                    }
+                }else{
+                    return response.failure(contactResponse.getMessage());
                 }
             }
         }
@@ -281,7 +300,18 @@ public class UserService implements Serializable {
                     }
                 }
             }
-           return response.success(userRepository.save(user));
+            User savedDetails=  userRepository.save(user);
+            try {
+                //activity logging
+                ActivityLog activityLog = new ActivityLog();
+                activityLog.setDescription("Profile Update");
+                activityLog.setRequestObject(app.getMapper().writeValueAsString(newDetails));
+                activityLog.setResponseObject(app.getMapper().writeValueAsString(savedDetails));
+                logService.log(principal,activityLog);
+            }catch ( Exception ex){
+                ex.printStackTrace();
+            }
+           return response.success(savedDetails);
         } else {
           return  response.failure("Account not found");
         }

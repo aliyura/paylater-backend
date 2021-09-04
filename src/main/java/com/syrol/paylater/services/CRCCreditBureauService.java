@@ -1,6 +1,9 @@
 package com.syrol.paylater.services;
 
 import com.syrol.paylater.pojos.*;
+import com.syrol.paylater.pojos.creditregistry.CRCBVNSearchRequest;
+import com.syrol.paylater.pojos.creditregistry.CRCCreditRequest;
+import com.syrol.paylater.pojos.creditregistry.CRCCreditResponse;
 import com.syrol.paylater.retrofitservices.CRCCreditBureauServiceInterface;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.UnsafeOkHttpClient;

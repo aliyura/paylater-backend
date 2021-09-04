@@ -85,4 +85,9 @@
             <column name="referred" type="bigint"/>
         </addColumn>
     </changeSet>
+    <changeSet author="aliyura (generated)" id="1630691727075-1">
+        <addColumn tableName="users">
+            <column name="contact_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -1,8 +1,6 @@
 package com.syrol.paylater.retrofitservices;
-import com.syrol.paylater.pojos.CRCCreditRequest;
-import com.syrol.paylater.pojos.CRCCreditResponse;
-import com.syrol.paylater.pojos.PaymentRequest;
-import com.syrol.paylater.pojos.PaymentResponse;
+import com.syrol.paylater.pojos.creditregistry.CRCCreditRequest;
+import com.syrol.paylater.pojos.creditregistry.CRCCreditResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
 

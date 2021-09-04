@@ -44,13 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        //  "/swagger-resources/**", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**", "/api/v1/api-docs","favicon.ico",
 
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/swagger-resources/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html**",
-                "/webjars/**","/api/v1/test1","/api/v1/user/validate/otp","/api/v1/user/verify/phone_number",
-                "/api/v1/api-docs","favicon.ico", "/api/v1/ping", "/api/v1/test","/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification","/api/v1/user/generate/otp", "/api/v1/user/password/reset",
-                "/api/v1/user/initiate_password_change","/api/v1/user/change_password","/api/v1/services/get_by_status","/api/v1//services/get_all").permitAll()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/api/v1/test1", "/api/v1/user/validate/otp", "/api/v1/user/verify/phone_number",
+                        "/api/v1/ping", "/api/v1/test", "/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification", "/api/v1/user/generate/otp", "/api/v1/user/password/reset",
+                        "/api/v1/user/initiate_password_change", "/api/v1/user/change_password", "/api/v1/services/get_by_status", "/api/v1//services/get_all").permitAll()
                 .and().requestMatchers().antMatchers("/api/**")
                 .and().authorizeRequests()
                 .antMatchers("/api/**").authenticated().and()
