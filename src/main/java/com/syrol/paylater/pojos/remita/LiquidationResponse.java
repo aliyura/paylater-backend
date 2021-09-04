@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DirectDebitResponse<T> {
+public class LiquidationResponse<T> {
     String statuscode;
     String requestId;
     String mandateId;

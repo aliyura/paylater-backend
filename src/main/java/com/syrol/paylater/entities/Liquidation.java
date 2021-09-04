@@ -6,19 +6,24 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name="direct_debits")
+@Table(name="liquidations")
 @Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DirectDebit implements Serializable {
+public class Liquidation implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
     @NonNull
+    String uuid;
+    @NonNull
+    String contactId;
+    @NonNull
+    String orderReference;
     String serviceTypeId;
     String hash;
     @NonNull
@@ -32,7 +37,8 @@ public class DirectDebit implements Serializable {
     String requestId;
     String transactionRef;
     @NonNull
-    Long  amount;
+    Double  amount;
+    Double  clearedAmount;
     String mandateType;
     int  maxNoOfDebits;
     @NotNull

@@ -3,7 +3,7 @@ package com.syrol.paylater.pojos.remita;
 import lombok.Data;
 
 @Data
-public class DirectDebitHistoryRequest<T> {
+public class LiquidationHistoryRequest<T> {
     private String merchantId;
     private String mandateId;
     private String hash;

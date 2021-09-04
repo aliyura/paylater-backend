@@ -1,19 +1,15 @@
 package com.syrol.paylater.controllers;
 
 import com.syrol.paylater.pojos.APIResponse;
-import com.syrol.paylater.pojos.paystack.PaymentRequest;
 import com.syrol.paylater.pojos.zoho.ZohoItemRequest;
 import com.syrol.paylater.pojos.zoho.ZohoMultiItemResponse;
 import com.syrol.paylater.pojos.zoho.ZohoResponse;
 import com.syrol.paylater.pojos.zoho.ZohoSingleItemResponse;
-import com.syrol.paylater.services.PaymentService;
 import com.syrol.paylater.services.ZohoItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import retrofit2.http.DELETE;
 import retrofit2.http.PUT;
-
-import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor

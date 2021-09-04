@@ -20,29 +20,14 @@ public class ZohoContactService {
 
 
     private final App app;
+    private final ZohoAuthService zohoAuthService;
     private final com.syrol.paylater.util.Response apiResponse;
-    private ZohoContactServiceInterface zohoContactServiceInterface;
+    private  ZohoContactServiceInterface zohoContactServiceInterface;
     private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
     @Value("${spring.zoho.baseURL}")
     private String baseURL;
     @Value("${spring.zoho.organization}")
     private String organization;
-    @Value("${spring.zoho.clientId}")
-    private String clientId;
-    @Value("${spring.zoho.clientSecret}")
-    private String clientSecret;
-    @Value("${spring.zoho.grantType}")
-    private String grantType;
-    @Value("${spring.zoho.scope}")
-    private String scope;
-    @Value("${spring.zoho.accessType}")
-    private String accessType;
-    @Value("${spring.zoho.redirectURL}")
-    private String redirectURL;
-    @Value("${spring.zoho.code}")
-    private String code;
-    @Value("${spring.zoho.accessToken}")
-    private String accessToken;
 
 
     @PostConstruct
@@ -53,32 +38,11 @@ public class ZohoContactService {
         zohoContactServiceInterface = retrofit.create(ZohoContactServiceInterface.class);
     }
 
-    public ZohoTokenResponse accessTokenManager() {
-        try {
-//            app.print("#########Generating Zoho access token");
-//            Response<ZohoTokenResponse> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
-//            if(tokenResponseResponse.isSuccessful()){
-//                app.print("Response:");
-//                app.print(tokenResponseResponse.body());
-//                return  tokenResponseResponse.body();
-//            }
-//            app.print("Response:");
-//            app.print(tokenResponseResponse.headers());
-//            app.print(tokenResponseResponse.code());
-            ZohoTokenResponse tokenResponse = new ZohoTokenResponse();
-            tokenResponse.setAccess_token(accessToken);
-            return tokenResponse;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     public APIResponse createContact(ZohoContactRequest request) {
         try {
             app.print("#########Zoho Create Contact Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleContactResponse> zohoResponse = zohoContactServiceInterface.createContact(authorization, request, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -107,7 +71,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho Update Contact Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleContactResponse> zohoResponse = zohoContactServiceInterface.updateContact(authorization, contactId, request, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -133,7 +97,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho Delete Contact Request");
             app.print(contactId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoContactServiceInterface.deleteContact(authorization, contactId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -159,7 +123,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho Send Email to Contact Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoContactServiceInterface.sendEmail(authorization, contactId,request, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -185,7 +149,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho Activate Contact Request");
             app.print(contactId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoContactServiceInterface.activateContact(authorization, contactId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -211,7 +175,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho deActivate Contact Request");
             app.print(contactId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoContactServiceInterface.deActivateContact(authorization, contactId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -237,7 +201,7 @@ public class ZohoContactService {
         try {
             app.print("#########Zoho Get Contact Request");
             app.print(contactId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleContactResponse> zohoResponse = zohoContactServiceInterface.getContact(authorization, contactId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -262,7 +226,7 @@ public class ZohoContactService {
     public APIResponse getContacts() {
         try {
             app.print("#########Zoho Get Contacts Request");
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoMultiContactResponse> zohoResponse = zohoContactServiceInterface.getContacts(authorization, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);

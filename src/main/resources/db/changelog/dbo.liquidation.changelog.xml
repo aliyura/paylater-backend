@@ -1,9 +1,9 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
         <changeSet author="aliyura (generated)" id="1630406490405-1">
-            <createTable tableName="direct_debits">
+            <createTable tableName="liquidations">
                 <column autoIncrement="true" name="id" type="BIGINT">
-                    <constraints nullable="false" primaryKey="true" primaryKeyName="direct_debitsPK"/>
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="liquidationsPK"/>
                 </column>
                 <column name="amount" type="BIGINT"/>
                 <column name="created_date" type="datetime"/>
@@ -33,4 +33,24 @@
                 <column name="transaction_ref" type="VARCHAR(255)"/>
             </createTable>
         </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-4">
+        <addColumn tableName="liquidations">
+            <column name="cleared_amount" type="double precision"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-6">
+        <addColumn tableName="liquidations">
+            <column name="contact_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-7">
+        <addColumn tableName="liquidations">
+            <column name="order_reference" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="aliyura (generated)" id="1630752531139-9">
+        <addColumn tableName="liquidations">
+            <column name="uuid" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

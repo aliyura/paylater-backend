@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class DirectDebitInstructionRequest<T> {
+public class LiquidationInstructionRequest<T> {
     private String hash;
     private String mandateId;
     private String requestId;

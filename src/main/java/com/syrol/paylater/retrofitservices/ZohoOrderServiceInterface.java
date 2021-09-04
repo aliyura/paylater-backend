@@ -5,13 +5,6 @@ import retrofit2.http.*;
 
 public interface ZohoOrderServiceInterface {
 
-    @POST("oauth/v2/token")
-    Call<ZohoTokenResponse> generateToken(@Query("code") String code,
-                               @Query("client_id") String client_id,
-                               @Query("client_secret") String client_secret,
-                               @Query("redirect_uri") String redirect_uri,
-                               @Query("grant_type") String grant_type,
-                               @Query("scope") String scope);
 
     @POST("api/v3/items")
     Call<ZohoSingleItemResponse> createItem(@Header("Authorization") String token, @Body ZohoItemRequest request, @Query("organization_id") String organization);

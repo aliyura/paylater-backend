@@ -7,8 +7,8 @@ import com.syrol.paylater.enums.Status;
 import com.syrol.paylater.pojos.APIResponse;
 import com.syrol.paylater.pojos.OrderActivationRequest;
 import com.syrol.paylater.pojos.OrderCancellationRequest;
-import com.syrol.paylater.pojos.paystack.PaymentRequest;
-import com.syrol.paylater.pojos.paystack.PaymentResponse;
+import com.syrol.paylater.pojos.paystack.PaymentInitializeRequest;
+import com.syrol.paylater.pojos.paystack.PaymentVerificationResponse;
 import com.syrol.paylater.pojos.zoho.*;
 import com.syrol.paylater.repositories.OrderRepository;
 import com.syrol.paylater.retrofitservices.ZohoOrderServiceInterface;
@@ -38,30 +38,15 @@ public class OrderService {
     private final com.syrol.paylater.util.Response apiResponse;
     private final OrderRepository orderRepository;
     private  final  PaymentService paymentService;
+    private final  ZohoAuthService zohoAuthService;
     private ZohoOrderServiceInterface zohoOrderServiceInterface;
     private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
     @Value("${spring.zoho.baseURL}")
     private String baseURL;
     @Value("${spring.zoho.organization}")
     private String organization;
-    @Value("${spring.zoho.clientId}")
-    private String clientId;
-    @Value("${spring.zoho.clientSecret}")
-    private String clientSecret;
-    @Value("${spring.zoho.grantType}")
-    private String grantType;
-    @Value("${spring.zoho.scope}")
-    private String scope;
-    @Value("${spring.zoho.accessType}")
-    private String accessType;
-    @Value("${spring.zoho.redirectURL}")
-    private String redirectURL;
-    @Value("${spring.zoho.code}")
-    private String code;
-    @Value("${spring.zoho.accessToken}")
-    private String accessToken;
-    private int deliveryFee=500;
-
+    @Value("${spring.order.deliveryFee}")
+    private int deliveryFee;
 
     @PostConstruct
     public void init() {
@@ -71,26 +56,6 @@ public class OrderService {
         zohoOrderServiceInterface = retrofit.create(ZohoOrderServiceInterface.class);
     }
 
-    public ZohoTokenResponse accessTokenManager() {
-        try {
-//            app.print("#########Generating Zoho access token");
-//            Response<ZohoTokenResponse> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
-//            if(tokenResponseResponse.isSuccessful()){
-//                app.print("Response:");
-//                app.print(tokenResponseResponse.body());
-//                return  tokenResponseResponse.body();
-//            }
-//            app.print("Response:");
-//            app.print(tokenResponseResponse.headers());
-//            app.print(tokenResponseResponse.code());
-            ZohoTokenResponse tokenResponse = new ZohoTokenResponse();
-            tokenResponse.setAccess_token(accessToken);
-            return tokenResponse;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 
     public APIResponse initiateOrder(Principal principal, Order request) {
         try {
@@ -106,7 +71,7 @@ public class OrderService {
             else{
                 app.print("#########Initiate Order Request");
                 app.print(request);
-                String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+                String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
 
                 if(request.getEmail()==null)
                     request.setEmail(user.getEmail());
@@ -144,12 +109,12 @@ public class OrderService {
                     request.setUuid(user.getUuid());
 
                     if (request.getPaymentMethod().equals(OrderPaymentMethod.PAYNOW)) {
-                        PaymentRequest paymentRequest = new PaymentRequest();
+                        PaymentInitializeRequest paymentRequest = new PaymentInitializeRequest();
                         paymentRequest.setEmail(user.getEmail());
                         paymentRequest.setReference(request.getOrderReference());
                         paymentRequest.setAmount(request.getAmount());
                         paymentRequest.setCallback_url("https://paylater.com/payment/status");
-                        APIResponse<PaymentResponse> paymentInitiateResponse=   paymentService.initializePayment(paymentRequest);
+                        APIResponse<PaymentVerificationResponse> paymentInitiateResponse=   paymentService.initializePayment(principal, paymentRequest, request.getOrderReference());
                         if(paymentInitiateResponse.isSuccess()){
                               //save order
                                orderRepository.save(request);
@@ -191,7 +156,7 @@ public class OrderService {
 
             app.print("#########Zoho Update Order Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
 
             Order userOrder = orderRepository.findByOrderReference(orderReference).orElse(null);
             if (userOrder != null) {
@@ -253,7 +218,7 @@ public class OrderService {
 
             app.print("######### Cancel Order Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
 
             Order userOrder = orderRepository.findByOrderReference(orderReference).orElse(null);
             if (userOrder != null) {

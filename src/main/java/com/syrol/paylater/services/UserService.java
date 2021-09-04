@@ -1,4 +1,5 @@
 package com.syrol.paylater.services;
+import com.syrol.paylater.entities.ActivityLog;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.AccountType;
 import com.syrol.paylater.pojos.*;
@@ -34,6 +35,7 @@ public class UserService implements Serializable {
     private final PasswordEncoder passwordEncoder;
     private final MessagingService messagingService;
     private  final ZohoContactService zohoContactService;
+    private  final  ActivityLogService logService;
     private final AuthenticationManager auth;
     private final JwtUtil jwtUtil;
 
@@ -298,7 +300,18 @@ public class UserService implements Serializable {
                     }
                 }
             }
-           return response.success(userRepository.save(user));
+            User savedDetails=  userRepository.save(user);
+            try {
+                //activity logging
+                ActivityLog activityLog = new ActivityLog();
+                activityLog.setDescription("Profile Update");
+                activityLog.setRequestObject(app.getMapper().writeValueAsString(newDetails));
+                activityLog.setResponseObject(app.getMapper().writeValueAsString(savedDetails));
+                logService.log(principal,activityLog);
+            }catch ( Exception ex){
+                ex.printStackTrace();
+            }
+           return response.success(savedDetails);
         } else {
           return  response.failure("Account not found");
         }

@@ -2,7 +2,7 @@ package com.syrol.paylater.pojos.remita;
 import lombok.Data;
 
 @Data
-public class DirectDebitRequest<T> {
+public class LiquidationRequest<T> {
     String merchantId;
     String serviceTypeId;
     String hash;
@@ -12,7 +12,7 @@ public class DirectDebitRequest<T> {
     String payerBankCode;
     String payerAccount;
     String requestId;
-    Long amount;
+    Double amount;
     String mandateType;
     int maxNoOfDebits;
     String startDate;

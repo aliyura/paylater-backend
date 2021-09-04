@@ -5,14 +5,6 @@ import retrofit2.http.*;
 
 public interface ZohoContactServiceInterface {
 
-    @POST("oauth/v2/token")
-    Call<ZohoTokenResponse> generateToken(@Query("code") String code,
-                               @Query("client_id") String client_id,
-                               @Query("client_secret") String client_secret,
-                               @Query("redirect_uri") String redirect_uri,
-                               @Query("grant_type") String grant_type,
-                               @Query("scope") String scope);
-
     @POST("api/v3/contacts")
     Call<ZohoSingleContactResponse> createContact(@Header("Authorization") String token, @Body ZohoContactRequest request, @Query("organization_id") String organization);
 

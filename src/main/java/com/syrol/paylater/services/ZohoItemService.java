@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 public class ZohoItemService {
 
     private final App app;
+    private final ZohoAuthService zohoAuthService;
     private final com.syrol.paylater.util.Response apiResponse;
     private ZohoItemServiceInterface zohoItemServiceInterface;
     private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
@@ -27,23 +28,6 @@ public class ZohoItemService {
     private String baseURL;
     @Value("${spring.zoho.organization}")
     private String organization;
-    @Value("${spring.zoho.clientId}")
-    private String clientId;
-    @Value("${spring.zoho.clientSecret}")
-    private String clientSecret;
-    @Value("${spring.zoho.grantType}")
-    private String grantType;
-    @Value("${spring.zoho.scope}")
-    private String scope;
-    @Value("${spring.zoho.accessType}")
-    private String accessType;
-    @Value("${spring.zoho.redirectURL}")
-    private String redirectURL;
-    @Value("${spring.zoho.code}")
-    private String code;
-    @Value("${spring.zoho.accessToken}")
-    private String accessToken;
-
 
     @PostConstruct
     public void init() {
@@ -53,32 +37,11 @@ public class ZohoItemService {
         zohoItemServiceInterface = retrofit.create(ZohoItemServiceInterface.class);
     }
 
-    public ZohoTokenResponse accessTokenManager() {
-        try {
-//            app.print("#########Generating Zoho access token");
-//            Response<ZohoTokenResponse> tokenResponseResponse = zohoServiceInterface.generateToken(code, clientId, clientSecret, redirectURL, grantType, scope).execute();
-//            if(tokenResponseResponse.isSuccessful()){
-//                app.print("Response:");
-//                app.print(tokenResponseResponse.body());
-//                return  tokenResponseResponse.body();
-//            }
-//            app.print("Response:");
-//            app.print(tokenResponseResponse.headers());
-//            app.print(tokenResponseResponse.code());
-            ZohoTokenResponse tokenResponse = new ZohoTokenResponse();
-            tokenResponse.setAccess_token(accessToken);
-            return tokenResponse;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     public APIResponse createItem(ZohoItemRequest request) {
         try {
             app.print("#########Zoho Create Item Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleItemResponse> zohoResponse = zohoItemServiceInterface.createItem(authorization, request, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -104,7 +67,7 @@ public class ZohoItemService {
         try {
             app.print("#########Zoho Update Item Request");
             app.print(request);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleItemResponse> zohoResponse = zohoItemServiceInterface.updateItem(authorization, ItemId, request, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -130,7 +93,7 @@ public class ZohoItemService {
         try {
             app.print("#########Zoho Delete Item Request");
             app.print(ItemId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoItemServiceInterface.deleteItem(authorization, ItemId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -156,7 +119,7 @@ public class ZohoItemService {
         try {
             app.print("#########Zoho Activate Item Request");
             app.print(ItemId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoItemServiceInterface.activateItem(authorization, ItemId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -182,7 +145,7 @@ public class ZohoItemService {
         try {
             app.print("#########Zoho deActivate Item Request");
             app.print(ItemId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoResponse> zohoResponse = zohoItemServiceInterface.deActivateItem(authorization, ItemId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -208,7 +171,7 @@ public class ZohoItemService {
         try {
             app.print("#########Zoho Get Item Request");
             app.print(ItemId);
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoSingleItemResponse> zohoResponse = zohoItemServiceInterface.getItem(authorization, ItemId, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);
@@ -233,7 +196,7 @@ public class ZohoItemService {
     public APIResponse getItems() {
         try {
             app.print("#########Zoho Get Items Request");
-            String authorization = String.format("Bearer %s", accessTokenManager().getAccess_token());
+            String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
             Response<ZohoMultiItemResponse> zohoResponse = zohoItemServiceInterface.getItems(authorization, organization).execute();
             app.print("Response data:");
             app.print(zohoResponse);

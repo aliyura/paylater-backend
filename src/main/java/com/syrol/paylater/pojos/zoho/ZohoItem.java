@@ -1,22 +1,31 @@
 package com.syrol.paylater.pojos.zoho;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class ZohoItem {
-    protected String item_id;
-    protected String name;
-    protected Long rate;
-    protected String description;
-    protected String sku;
-    protected String product_type;
-    protected String avatax_use_code;
-    protected String item_type;
-    protected String inventory_account_id;
-    protected String vendor_id;
-    protected String reorder_level;
-    protected String initial_stock;
-    protected String initial_stock_rate;
+public class ZohoItem implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    String item_id;
+    String name;
+    Long rate;
+    String description;
+    String sku;
+    String product_type;
+    String avatax_use_code;
+    String item_type;
+    String inventory_account_id;
+    String vendor_id;
+    String reorder_level;
+    String initial_stock;
+    String initial_stock_rate;
 }

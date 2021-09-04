@@ -26,6 +26,8 @@ public class Order implements Serializable {
     @NotNull
     String contactId;
     @NotNull
+    @Column
+    @ElementCollection(targetClass=ZohoItem.class)
     List<ZohoItem> items;
     @NotNull
     String uuid;

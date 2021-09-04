@@ -1,48 +1,45 @@
-
 package com.syrol.paylater.entities;
-
-import com.syrol.paylater.enums.ServiceTenureType;
 import com.syrol.paylater.enums.Status;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-
-@Table(name="service_request")
+@Table(name="payments")
 @Entity
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceRequest implements Serializable {
+public class Payment implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @NotNull
-    String suid;
+    String contactId;
     @NotNull
     String uuid;
-    @NotNull
-    String sruid;
-    @Column(columnDefinition="TEXT")
-    String remark;
-    String userName;
     String orderReference;
-    String userEmail;
     @NotNull
+    String reference;
+    String name;
+    String email;
+    Long paymentId;
+    String domain;
     Double amount;
-    Double clearedAmount;
+    Double fees;
+    String gateway_response;
+    String channel;
+    String currency;
+    String ip_address;
     @NotNull
     @Enumerated(EnumType.STRING)
     Status status;
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    ServiceTenureType tenure;
-    String lastModifiedBy;
+    String paidAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date paymentDate;
     @Temporal(TemporalType.TIMESTAMP)
     Date lastModifiedDate;
     @Temporal(TemporalType.TIMESTAMP)
