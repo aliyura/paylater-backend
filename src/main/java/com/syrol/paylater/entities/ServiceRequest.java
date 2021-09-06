@@ -30,6 +30,7 @@ public class ServiceRequest implements Serializable {
     String sruid;
     @Column(columnDefinition="TEXT")
     String remark;
+    String serviceTitle;
     String userName;
     String orderReference;
     String userEmail;
