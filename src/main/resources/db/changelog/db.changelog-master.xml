@@ -11,5 +11,6 @@
      <include  file="db/changelog/dbo.orders.changelog.xml"/>
      <include  file="db/changelog/dbo.order-items.changelog.xml"/>
      <include  file="db/changelog/dbo.payments.changelog.xml"/>
+     <include  file="db/changelog/dbo.activity-logs.changelog.xml"/>
 
 </databaseChangeLog>

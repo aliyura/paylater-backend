@@ -1,9 +1,11 @@
 package com.syrol.paylater.services;
+import com.syrol.paylater.entities.PLService;
 import com.syrol.paylater.entities.ServiceRequest;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.ServiceTenureType;
 import com.syrol.paylater.enums.Status;
 import com.syrol.paylater.pojos.APIResponse;
+import com.syrol.paylater.repositories.ServiceRepository;
 import com.syrol.paylater.repositories.ServiceRequestRepository;
 import com.syrol.paylater.util.App;
 import com.syrol.paylater.util.AuthDetails;
@@ -25,6 +27,7 @@ public class ServiceRequestService implements Serializable {
     private final Response response;
     private final AuthDetails authDetails;
     private final ServiceRequestRepository serviceRequestRepository;
+    private  final ServiceRepository serviceRepository;
 
 
     public APIResponse createServiceRequest(Principal principal, ServiceRequest serviceRequest){
@@ -38,14 +41,20 @@ public class ServiceRequestService implements Serializable {
         else {
             List<ServiceRequest> existingServiceRequest= serviceRequestRepository.findBySuidAndUser(serviceRequest.getSuid(),user.getUuid()).orElse(null);
             if(existingServiceRequest==null){
-                serviceRequest.setCreatedDate(new Date());
-                serviceRequest.setLastModifiedDate(new Date());
-                serviceRequest.setStatus(Status.PC);
-                serviceRequest.setUserEmail(user.getEmail());
-                serviceRequest.setUserName(user.getName());
-                serviceRequest.setUuid(user.getUuid());
-                serviceRequest.setSruid(app.generateRandomId());
-                return response.success(serviceRequestRepository.save(serviceRequest));
+                PLService plService = serviceRepository.findBySuid(serviceRequest.getSuid()).orElse(null);
+                if(plService!=null) {
+                    serviceRequest.setCreatedDate(new Date());
+                    serviceRequest.setLastModifiedDate(new Date());
+                    serviceRequest.setStatus(Status.PC);
+                    serviceRequest.setUserEmail(user.getEmail());
+                    serviceRequest.setUserName(user.getName());
+                    serviceRequest.setUuid(user.getUuid());
+                    serviceRequest.setServiceTitle(plService.getTitle());
+                    serviceRequest.setSruid(app.generateRandomId());
+                    return response.success(serviceRequestRepository.save(serviceRequest));
+                }else{
+                    return  response.failure("Service not Found!");
+                }
             }else{
                 return  response.failure("User ["+user.getName()+"] already applied for this service");
             }
