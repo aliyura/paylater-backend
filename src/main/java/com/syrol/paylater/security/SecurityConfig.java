@@ -1,8 +1,5 @@
 package com.syrol.paylater.security;
-import com.syrol.paylater.entities.User;
-import com.syrol.paylater.pojos.APIResponse;
 import com.syrol.paylater.services.CustomUserDetailsService;
-import com.syrol.paylater.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -43,9 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        //  "/swagger-resources/**", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**", "/api/v1/api-docs","favicon.ico",
-
         http.cors().and().csrf().disable().authorizeRequests().antMatchers("/api/v1/test1", "/api/v1/user/validate/otp", "/api/v1/user/verify/phone_number",
                         "/api/v1/ping", "/api/v1/test", "/api/v1/user/signin", "/api/v1/user/signup", "/api/v1/user/verification", "/api/v1/user/generate/otp", "/api/v1/user/password/reset",
                         "/api/v1/user/initiate_password_change", "/api/v1/user/change_password", "/api/v1/services/get_by_status", "/api/v1//services/get_all").permitAll()
@@ -84,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET","PUT","POST","UPDATE","DELETE"));
         corsConfiguration.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", corsConfiguration); // Global for all paths
