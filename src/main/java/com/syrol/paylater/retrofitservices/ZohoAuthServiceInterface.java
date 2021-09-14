@@ -11,5 +11,6 @@ public interface ZohoAuthServiceInterface {
                                                 @Query("client_secret") String client_secret,
                                                 @Query("redirect_uri") String redirect_uri,
                                                 @Query("grant_type") String grant_type);
+
 }
 

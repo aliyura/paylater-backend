@@ -1,5 +1,7 @@
 package com.syrol.paylater.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.syrol.paylater.pojos.*;
 import com.syrol.paylater.pojos.zoho.*;
 import com.syrol.paylater.retrofitservices.ZohoContactServiceInterface;
@@ -32,7 +34,11 @@ public class ZohoContactService {
 
     @PostConstruct
     public void init() {
-        Retrofit retrofit = new Retrofit.Builder().client(okHttpClient).addConverterFactory(GsonConverterFactory.create())
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder().client(okHttpClient).addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseURL)
                 .build();
         zohoContactServiceInterface = retrofit.create(ZohoContactServiceInterface.class);
