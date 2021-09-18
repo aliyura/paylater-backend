@@ -28,4 +28,16 @@ public class ZohoItem implements Serializable {
     String reorder_level;
     String initial_stock;
     String initial_stock_rate;
+    Double available_stock;
+    Double purchase_rate;
+    Double stock_on_hand;
+    Boolean has_attachment;
+    String status;
+    String unit;
+    String purchase_account_id;
+    String purchase_account_name;
+    String account_name;
+    String show_in_storefront;
+    String created_time;
+    String last_modified_time;
 }
