@@ -17,7 +17,7 @@ public class ZohoItem implements Serializable {
     Long id;
     String item_id;
     String name;
-    Long rate;
+    Double rate;
     String description;
     String sku;
     String product_type;

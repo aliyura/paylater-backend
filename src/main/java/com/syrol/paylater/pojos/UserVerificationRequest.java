@@ -6,5 +6,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserVerificationRequest<T> {
     private String username;
-    private String otp;
+    private Long otp;
 }

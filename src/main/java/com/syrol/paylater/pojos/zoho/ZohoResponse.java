@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class ZohoResponse {
     private int code;
     private String message;

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Paylater</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<table role="presentation" align="center" border="0" cellspacing="0" cellpadding="0" width="100%" style="background-color: #F5F5F5; padding:3em; table-layout: fixed; margin:20px">
+	<tbody >
+	<tr>
+		<td align="center">
+			<center style="width: 100%;">
+				<table
+						role="presentation"
+						border="0"
+						cellspacing="0"
+						cellpadding="0"
+						width="512"
+						bgcolor="#FFFFFF"
+						style="background-color: #ffffff; margin: 0 auto; max-width: 512px; width: inherit;">
+					<tbody>
+					<tr>
+						<td>
+							<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
+								<tbody>
+								<tr>
+									<td style="padding: 20px 24px 10px 24px;">
+										<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tbody>
+											<tr>
+												<td style="padding-bottom: 20px;">
+													<h2 style="margin: 0; color: #262626; font-weight: 400; font-size: 16px; line-height: 1.2;"><b th:text="${name}">Hello Abdul,</b></h2>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-bottom: 20px;">
+													<p th:utext="${body}" style="margin: 0; color: #4c4c4c; font-weight: 400; font-size: 16px; line-height: 1.25;">We received a request to reset the password on your Paylater Account.</p>
+												</td>
+											</tr>
+
+
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#EDF0F3" align="center" style="background-color: #A62689; padding: 0 24px; color: #fff; text-align: center;">
+								<tbody>
+								<tr>
+									<td align="center" style="padding: 16px 0 0 0; text-align: center;"></td>
+								</tr>
+								<tr>
+									<td>
+										<table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
+											<tbody>
+											<tr>
+												<td align="center" style="padding: 0 0 12px 0; text-align: center;"><p style="margin: 0; color: #fff; font-weight: 400; font-size: 12px; line-height: 1.333;"></p></td>
+											</tr>
+											<tr>
+												<td align="center" style="padding: 0 0 12px 0; text-align: center;">
+													<p style="margin: 0; color: #fff; font-weight: 400; font-size: 12px; line-height: 1.333;"
+													   th:text="${'This email was intended for ' + footname}">
+														This email was intended for Rabiu
+													</p>
+												</td>
+											</tr>
+											<tr>
+												<td align="center" style="padding: 0 0 5px 0; text-align: center;">
+	                                                                    <span style="margin: 0; color: #fff; font-weight: 400; font-size: 12px; line-height: 1.333;"
+																			  th:text="${'&reg; Paylater ' + year}">
+	                        												&reg; Paylater 2021
+	                                                                    </span>
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</center>
+		</td>
+	</tr>
+	</tbody>
+</table>
+</body>
+</html>

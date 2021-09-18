@@ -110,11 +110,15 @@ public class UserService implements Serializable {
 
                 if(contactResponse.isSuccess()) {
                     app.print("User created on Zoho");
+                    app.print(contactResponse.getPayload());
                     user.setContactId(contactResponse.getPayload().getContact_id());
                     User savedUser = userRepository.save(user);
                     if (savedUser != null) {
                         UserRequest request = new UserRequest();
                         request.setUsername(user.getEmail() != null ? user.getEmail() : user.getMobile());
+
+
+
                         app.print("OTP Sending...");
                         APIResponse SMSResponse = messagingService.generateAndSendOTP(request);
                         app.print("OTP response...");
@@ -166,8 +170,6 @@ public class UserService implements Serializable {
                         else
                             return response.failure("Your Account is not Active");
                     }
-
-
                 } else {
                     return response.failure("Invalid Login Credentials");
                 }
@@ -191,9 +193,9 @@ public class UserService implements Serializable {
                 userRepository.findByEmail(request.getUsername()).orElse(null)
         );
         if (user != null) {
+            app.print(user);
             app.print(user.getCode());
             app.print(request);
-            app.print(user.getCode().equals(request.getOtp()));
             if (user.getCode().equals(request.getOtp())) {
                 user.setLastModifiedDate(new Date());
                 user.setCountry(null);
@@ -241,7 +243,7 @@ public class UserService implements Serializable {
         if (user != null) {
             app.print(user.getCode());
             app.print(Long.valueOf(request.getOtp()));
-            if(user.getCode().equals(Long.valueOf(request.getOtp()))) {
+            if(user.getCode().equals(request.getOtp())) {
                 user.setLastModifiedDate(new Date());
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
                 return response.success(userRepository.save(user));

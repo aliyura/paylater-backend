@@ -9,5 +9,5 @@ import lombok.RequiredArgsConstructor;
 public class ZohoSingleContactResponse {
     private int code;
     private String message;
-    private ZohoContactRequest contact;
+    private ZohoContact contact;
 }

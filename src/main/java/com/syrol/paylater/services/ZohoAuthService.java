@@ -24,10 +24,8 @@ public class ZohoAuthService {
     private final com.syrol.paylater.util.Response apiResponse;
     private ZohoAuthServiceInterface zohoAuthServiceInterface;
     private OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
-    @Value("${spring.zoho.baseURL}")
-    private String baseURL;
-    @Value("${spring.zoho.organization}")
-    private String organization;
+    @Value("${spring.zoho.authBaseURL}")
+    private String baseAuthURL;
     @Value("${spring.zoho.clientId}")
     private String clientId;
     @Value("${spring.zoho.clientSecret}")
@@ -42,8 +40,12 @@ public class ZohoAuthService {
 
     @PostConstruct
     public void init() {
-        Retrofit retrofit = new Retrofit.Builder().client(okHttpClient).addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(baseURL)
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder().client(okHttpClient).addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl(baseAuthURL)
                 .build();
         zohoAuthServiceInterface = retrofit.create(ZohoAuthServiceInterface.class);
     }

@@ -80,19 +80,34 @@ public class MessagingService implements Serializable {
             request.setUsername(request.getUsername().replaceFirst("0","+234"));
         }
         User appUser = userRepository.findByEmail(request.getUsername()).orElse(userRepository.findByMobile(request.getUsername()).orElse(null));
-        if (appUser != null) {
-            Long otp = app.generateOTP();
-            appUser.setCode(otp);
-            appUser.setLastModifiedDate(new Date());
-            userRepository.save(appUser);
+        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(appUser.getEmail()).orElse(null);
+        Long otp = app.generateOTP();
+        if (existingVerificationRequest != null) {
+
+            existingVerificationRequest.setVerificationCode(String.valueOf(otp));
+            existingVerificationRequest.setUsername(request.getUsername());
+            existingVerificationRequest.setCreatedDate(new Date());
+            verificationRepository.save(existingVerificationRequest);
             //send SMS
-            APIResponse messengerResponse = this.sendSMS(appUser.getMobile(), "Your Paylater OTP is " + otp);
+
+            APIResponse messengerResponse = this.sendSMS(existingVerificationRequest.getUsername(), "Your Paylater OTP is " + otp);
             if (!messengerResponse.isSuccess())
                 return response.failure("Unable to send OTP");
             else
-                return response.success("OTP sent to " + appUser.getMobile());
+                return response.success("OTP sent to " + existingVerificationRequest.getUsername());
+
         } else {
-            return response.failure("Account not found");
+            VerificationRequest verificationRequest = new VerificationRequest();
+            verificationRequest.setVerificationCode(String.valueOf(otp));
+            verificationRequest.setUsername(request.getUsername());
+            verificationRequest.setCreatedDate(new Date());
+            verificationRepository.save(verificationRequest);
+            //send SMS
+            APIResponse messengerResponse = this.sendSMS(verificationRequest.getUsername(), "Your Paylater OTP is " + otp);
+            if (!messengerResponse.isSuccess())
+                return response.failure("Unable to send OTP");
+            else
+                return response.success("OTP sent to " + verificationRequest.getUsername());
         }
     }
 

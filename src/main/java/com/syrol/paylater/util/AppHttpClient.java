@@ -72,6 +72,35 @@ public class AppHttpClient<T> {
         return result;
     }
 
+    public String  post() {
+        try {
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            OutputStream os = conn.getOutputStream();
+            os.flush();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + conn.getURL());
+            System.out.println("Response Code : " + responseCode);
+            System.out.println("Request:");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                result = response.append(line).toString();
+            }
+            System.out.println("Response :" + result);
+            conn.disconnect();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public String  get() {
         String result = "";
         try {

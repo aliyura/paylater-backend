@@ -49,7 +49,7 @@ public class ZohoItemsController {
         return zohoItemService.getItem(itemId);
     }
 
-    @GetMapping("/items/")
+    @GetMapping("/items")
     public APIResponse<ZohoMultiItemResponse> getItems() {
         return zohoItemService.getItems();
     }
