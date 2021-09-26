@@ -74,6 +74,7 @@ public class PaymentService {
             if (response.isSuccessful()) {
                 //Initialize Payment
                 Payment payment = new Payment();
+                payment.setContactId(user.getContactId());
                 payment.setAmount(request.getAmount());
                 payment.setEmail(request.getEmail());
                 payment.setReference(request.getReference());
