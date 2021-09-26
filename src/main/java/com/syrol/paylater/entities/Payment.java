@@ -17,7 +17,6 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NotNull
     String contactId;
     @NotNull
     String uuid;
