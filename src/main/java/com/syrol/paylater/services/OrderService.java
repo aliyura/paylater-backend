@@ -1,5 +1,6 @@
 package com.syrol.paylater.services;
 import com.syrol.paylater.entities.Order;
+import com.syrol.paylater.entities.OrderItem;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.OrderDeliveryMethod;
 import com.syrol.paylater.enums.OrderPaymentMethod;
@@ -10,6 +11,7 @@ import com.syrol.paylater.pojos.OrderCancellationRequest;
 import com.syrol.paylater.pojos.paystack.PaymentInitializeRequest;
 import com.syrol.paylater.pojos.paystack.PaymentVerificationResponse;
 import com.syrol.paylater.pojos.zoho.*;
+import com.syrol.paylater.repositories.OrderItemRepository;
 import com.syrol.paylater.repositories.OrderRepository;
 import com.syrol.paylater.retrofitservices.ZohoOrderServiceInterface;
 import com.syrol.paylater.util.App;
@@ -28,6 +30,7 @@ import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,7 @@ public class OrderService {
     private final AuthDetails authDetails;
     private final com.syrol.paylater.util.Response apiResponse;
     private final OrderRepository orderRepository;
+    private  final OrderItemRepository orderItemRepository;
     private  final  PaymentService paymentService;
     private final  ZohoAuthService zohoAuthService;
     private ZohoOrderServiceInterface zohoOrderServiceInterface;
@@ -57,7 +61,7 @@ public class OrderService {
     }
 
 
-    public APIResponse initiateOrder(Principal principal, Order request) {
+    public APIResponse initiateOrder(Principal principal, ZohoOrderRequest request) {
         try {
             User user =authDetails.getAuthorizedUser(principal);
             if(request.getPaymentMethod()==null)
@@ -71,7 +75,7 @@ public class OrderService {
             else{
                 app.print("#########Initiate Order Request");
                 app.print(request);
-                String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
+//                String authorization = String.format("Bearer %s", zohoAuthService.authManager().getAccess_token());
 
                 if(request.getEmail()==null)
                     request.setEmail(user.getEmail());
@@ -88,52 +92,76 @@ public class OrderService {
 
                 //get total order sum
                 double totalAmount=0;
-                for (ZohoItem item: request.getItems()) {
-                    totalAmount+=item.getRate();
+                for (OrderItem item: request.getItems()) {
+                    if(item.getQuantity()<=0)
+                        item.setQuantity(1);
+                        totalAmount += item.getRate() * item.getQuantity();
                 }
 
                 if(totalAmount>0) {
 
                     //set delivery fee to zero if home pickup
                     if (request.getDeliveryMethod().equals(OrderDeliveryMethod.HOME_DELIVERY))
-                        deliveryFee = 0;
+                        deliveryFee = 500;
 
+
+                    Order orderRequest=app.getMapper().convertValue(request,Order.class);
                     totalAmount = totalAmount + deliveryFee;
-                    request.setAmount(totalAmount);
-                    request.setOrderReference(app.generateRandomId());
-                    request.setDeliveryFee(deliveryFee);
-                    request.setContactId(user.getContactId());
-                    request.setLastModifiedDate(new Date());
-                    request.setCreatedDate(new Date());
-                    request.setStatus(Status.PP);
-                    request.setUuid(user.getUuid());
+                    orderRequest.setAmount(totalAmount);
+                    orderRequest.setOrderReference(app.generateRandomId());
+                    orderRequest.setDeliveryFee(deliveryFee);
+                    orderRequest.setContactId(user.getContactId());
+                    orderRequest.setLastModifiedDate(new Date());
+                    orderRequest.setCreatedDate(new Date());
+                    orderRequest.setStatus(Status.PP);
+                    orderRequest.setUuid(user.getUuid());
 
-                    if (request.getPaymentMethod().equals(OrderPaymentMethod.PAYNOW)) {
+                    if (orderRequest.getPaymentMethod().equals(OrderPaymentMethod.PAYNOW)) {
                         PaymentInitializeRequest paymentRequest = new PaymentInitializeRequest();
                         paymentRequest.setEmail(user.getEmail());
-                        paymentRequest.setReference(request.getOrderReference());
-                        paymentRequest.setAmount(request.getAmount());
+                        paymentRequest.setReference(orderRequest.getOrderReference());
+                        paymentRequest.setAmount(orderRequest.getAmount());
                         paymentRequest.setCallback_url("https://paylater.com/payment/status");
-                        APIResponse<PaymentVerificationResponse> paymentInitiateResponse=   paymentService.initializePayment(principal, paymentRequest, request.getOrderReference());
+                        APIResponse<PaymentVerificationResponse> paymentInitiateResponse=   paymentService.initializePayment(principal, paymentRequest, orderRequest.getOrderReference());
                         if(paymentInitiateResponse.isSuccess()){
                               //save order
-                               orderRepository.save(request);
+                               Order savedOrder= orderRepository.save(orderRequest);
+                                for (OrderItem item: request.getItems()) {
+                                    item.setOrderId(savedOrder.getId());
+                                    item.setCreatedDate(new Date());
+                                }
+                                orderItemRepository.saveAll(request.getItems());
+
                               return apiResponse.success(paymentInitiateResponse.getPayload());
                         }else{
                             return paymentInitiateResponse;
                         }
                     }
                     else if(request.getPaymentMethod().equals(OrderPaymentMethod.POD)){
-                        request.setStatus(Status.PC);
-                        request.setStatusReason("Pay on delivery order");
+                        orderRequest.setStatus(Status.PC);
+                        orderRequest.setStatusReason("Pay on delivery order");
                         //save order
-                       return apiResponse.success(orderRepository.save(request));
+                        Order savedOrder= orderRepository.save(orderRequest);
+                        for (OrderItem item: request.getItems()) {
+                            item.setOrderId(savedOrder.getId());
+                            item.setCreatedDate(new Date());
+                        }
+                        orderItemRepository.saveAll(request.getItems());
+
+                        return apiResponse.success(savedOrder);
                     }
                     else if(request.getPaymentMethod().equals(OrderPaymentMethod.PAYLATER)){
-                        request.setStatus(Status.PC);
-                        request.setStatusReason("Pay latter order");
+                        orderRequest.setStatus(Status.PC);
+                        orderRequest.setStatusReason("Pay latter order");
                         //save order
-                        return apiResponse.success(orderRepository.save(request));
+                        Order savedOrder= orderRepository.save(orderRequest);
+                        for (OrderItem item: request.getItems()) {
+                            item.setOrderId(savedOrder.getId());
+                            item.setCreatedDate(new Date());
+                        }
+                        orderItemRepository.saveAll(request.getItems());
+
+                        return apiResponse.success(savedOrder);
                     }else{
                         return apiResponse.failure("Invalid Payment Method <paymentMethod>");
                     }
@@ -258,6 +286,16 @@ public class OrderService {
         else
             return  apiResponse.failure("No Order Available");
     }
+
+    public APIResponse<Order> getOrderItems(Principal principal, Long orderId) {
+        Order order =  orderRepository.findById(orderId).orElse(null);
+        if(order!=null)
+            return apiResponse.success(orderItemRepository.findByOrderId(orderId));
+        else
+            return  apiResponse.failure("No Order Available");
+    }
+
+
 
 
     public APIResponse<Order> getActiveOrders(Principal principal, Pageable pageable) {

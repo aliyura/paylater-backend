@@ -1,14 +1,21 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
-    <changeSet author="aliyura (generated)" id="1630752531139-1">
-        <createTable tableName="order_items">
-            <column name="order_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="items" type="VARBINARY(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="aliyura (generated)" id="1630752531139-10">
-        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_items" constraintName="FKbioxgbv59vetrxe0ejfubep1w" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders" validate="true"/>
+    <changeSet author="aliyura (generated)" id="163015467888-2">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists tableName="order_items"/>
+        </not>
+    </preConditions>
+    <createTable tableName="order_items">
+    <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="servicesPK"/>
+    </column>
+    <column name="order_id" type="bigint"/>
+    <column name="item_id" type="VARCHAR(255)"/>
+    <column name="name" type="VARCHAR(255)"/>
+     <column name="rate" type="int"/>
+     <column name="quantity" type="VARCHAR(255)"/>
+     <column name="created_date" type="datetime"/>
+    </createTable>
     </changeSet>
 </databaseChangeLog>

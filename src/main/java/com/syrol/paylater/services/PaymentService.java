@@ -5,6 +5,7 @@ import com.syrol.paylater.entities.User;
 import com.syrol.paylater.enums.Status;
 import com.syrol.paylater.pojos.APIResponse;
 import com.syrol.paylater.pojos.paystack.PaymentInitializeRequest;
+import com.syrol.paylater.pojos.paystack.PaymentInitializeResponse;
 import com.syrol.paylater.pojos.paystack.PaymentVerificationResponse;
 import com.syrol.paylater.pojos.paystack.PaymentVerificationResponseData;
 import com.syrol.paylater.repositories.PaymentRepository;
@@ -38,8 +39,8 @@ public class PaymentService {
     private final App app;
     private final AuthDetails authDetails;
     private final com.syrol.paylater.util.Response apiResponse;
+    private final PaymentRepository paymentRepository;
     private PaymentServiceInterface integrationService;
-    private PaymentRepository paymentRepository;
     private String baseURL = "https://api.paystack.co";
     @Value("${spring.paylater.paystack.token}")
     private String secretKey;
@@ -63,9 +64,13 @@ public class PaymentService {
             app.print("#########Initialize Payment Request");
             app.print(request);
             String authorization = String.format("Bearer %s", secretKey);
-            Response<PaymentVerificationResponse> response = integrationService.initializePayment(authorization, request).execute();
+            app.print(authorization);
+            Response<PaymentInitializeResponse> response = integrationService.initializePayment(authorization, request).execute();
             app.print("#########Response:");
             app.print(response);
+            app.print(response.body().getData());
+            app.print(response.message());
+
             if (response.isSuccessful()) {
                 //Initialize Payment
                 Payment payment = new Payment();
@@ -78,7 +83,7 @@ public class PaymentService {
                 payment.setName(user.getName());
                 payment.setStatus(Status.PP);
                 payment.setCreatedDate(new Date());
-
+                app.print(payment);
                 paymentRepository.save(payment);
 
                 return new APIResponse<>("Request Successful", true, response.body().getData());

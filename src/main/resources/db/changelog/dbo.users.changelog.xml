@@ -1,6 +1,11 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
     <changeSet author="aliyura (generated)" id="1630040377751-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -56,36 +61,63 @@
         </createTable>
     </changeSet>
     <changeSet author="aliyura (generated)" id="1630141157323-3">
+        <preConditions onFail="MARK_RAN">
+        <not>
+            <columnExists tableName="users" columnName="bank_account_name"/>
+        </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="bank_account_name" type="varchar(255)"/>
         </addColumn>
     </changeSet>
     <changeSet author="aliyura (generated)" id="1630141157323-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="bank_account_number"/>
+            </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="bank_account_number" type="varchar(255)"/>
         </addColumn>
     </changeSet>
     <changeSet author="aliyura (generated)" id="1630141157323-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="bank_name"/>
+            </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="bank_name" type="varchar(255)"/>
         </addColumn>
     </changeSet>
     <changeSet author="aliyura (generated)" id="1630141157323-6">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="uuid"/>
+            </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="uuid" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
     </changeSet>
-    <changeSet author="aliyura (generated)" id="1630141157323-7">
-        <dropColumn columnName="uiid" tableName="users"/>
-    </changeSet>
     <changeSet author="aliyura (generated)" id="1630158561962-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="referred"/>
+            </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="referred" type="bigint"/>
         </addColumn>
     </changeSet>
     <changeSet author="aliyura (generated)" id="1630691727075-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="contact_id"/>
+            </not>
+        </preConditions>
         <addColumn tableName="users">
             <column name="contact_id" type="varchar(255)"/>
         </addColumn>

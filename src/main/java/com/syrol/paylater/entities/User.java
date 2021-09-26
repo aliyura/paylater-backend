@@ -63,6 +63,7 @@ public class User implements Serializable {
     String bankAccountName;
     String bankAccountNumber;
     String bankName;
+
     @Temporal(TemporalType.TIMESTAMP)
     Date lastLoginDate;
     @Temporal(TemporalType.TIMESTAMP)

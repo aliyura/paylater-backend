@@ -3,6 +3,7 @@ import com.syrol.paylater.entities.Order;
 import com.syrol.paylater.pojos.APIResponse;
 import com.syrol.paylater.pojos.OrderActivationRequest;
 import com.syrol.paylater.pojos.OrderCancellationRequest;
+import com.syrol.paylater.pojos.zoho.ZohoOrderRequest;
 import com.syrol.paylater.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +19,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order/initiate")
-    public APIResponse<Order> initiateOrder(Principal principal, @RequestBody Order request) {
+    public APIResponse<Order> initiateOrder(Principal principal, @RequestBody ZohoOrderRequest request) {
         return orderService.initiateOrder(principal, request);
     }
 
@@ -36,7 +37,6 @@ public class OrderController {
     public APIResponse<Order> getOrder(Principal principal, @PathVariable String orderReference) {
         return orderService.getOrder(principal,orderReference);
     }
-
     @GetMapping("/order/get_my_orders")
     public APIResponse<Order> getMyOrders(Principal principal) {
         return orderService.getMyOrders(principal);
@@ -45,6 +45,10 @@ public class OrderController {
     @GetMapping("/order/get_orders")
     public APIResponse<Order> getOrders(Principal principal, @RequestParam int page, @RequestParam int size) {
         return orderService.getOrders(principal,PageRequest.of(page,size,Sort.by("id").descending()));
+    }
+    @GetMapping("/order/get_order_items/{orderId}")
+    public APIResponse<Order> getOrders(Principal principal, @PathVariable Long orderId) {
+        return orderService.getOrderItems(principal,orderId);
     }
 
     @GetMapping("/order/get_active_orders")

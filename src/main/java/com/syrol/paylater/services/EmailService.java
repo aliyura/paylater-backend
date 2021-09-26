@@ -10,7 +10,6 @@ package com.syrol.paylater.services;
         import org.springframework.stereotype.Service;
         import org.thymeleaf.context.Context;
         import org.thymeleaf.TemplateEngine;
-
         import javax.mail.Message;
         import javax.mail.PasswordAuthentication;
         import javax.mail.Session;

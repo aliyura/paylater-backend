@@ -115,6 +115,7 @@ public class App {
 
     public ObjectMapper getMapper(){
         ObjectMapper mapper= new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         return mapper;
     }
