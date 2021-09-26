@@ -15,9 +15,7 @@
             <column name="amount" type="DOUBLE"/>
             <column name="city" type="VARCHAR(255)"/>
             <column name="cleared_amount" type="DOUBLE"/>
-            <column name="contact_id" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="contact_id" type="VARCHAR(255)"/>
             <column name="country" type="VARCHAR(255)"/>
             <column name="created_date" type="datetime"/>
             <column name="delivery_fee" type="INT">
