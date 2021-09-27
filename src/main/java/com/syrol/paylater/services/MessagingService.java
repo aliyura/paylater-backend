@@ -110,17 +110,17 @@ public class MessagingService implements Serializable {
         }
     }
 
-    public APIResponse generateAndSendOTPWithoutAuth(VerifyPhoneNumberRequest request) {
+    public APIResponse generateAndSendOTPWithoutAuth(UserRequest request) {
         app.print(request);
-        if(request.getMobileNumber().startsWith("0") && app.validNumber(request.getMobileNumber())){
-            request.setMobileNumber(request.getMobileNumber().replaceFirst("0","+234"));
+        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
+            request.setUsername(request.getUsername().replaceFirst("0","+234"));
         }
-        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getMobileNumber()).orElse(null);
+        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getUsername()).orElse(null);
         Long otp = app.generateOTP();
         if (existingVerificationRequest != null) {
 
             existingVerificationRequest.setVerificationCode(String.valueOf(otp));
-            existingVerificationRequest.setUsername(request.getMobileNumber());
+            existingVerificationRequest.setUsername(request.getUsername());
             existingVerificationRequest.setCreatedDate(new Date());
             verificationRepository.save(existingVerificationRequest);
             //send SMS
@@ -134,7 +134,7 @@ public class MessagingService implements Serializable {
         } else {
             VerificationRequest verificationRequest = new VerificationRequest();
             verificationRequest.setVerificationCode(String.valueOf(otp));
-            verificationRequest.setUsername(request.getMobileNumber());
+            verificationRequest.setUsername(request.getUsername());
             verificationRequest.setCreatedDate(new Date());
             verificationRepository.save(verificationRequest);
             //send SMS
