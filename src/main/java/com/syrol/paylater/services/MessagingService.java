@@ -2,10 +2,7 @@ package com.syrol.paylater.services;
 import com.syrol.paylater.entities.User;
 import com.syrol.paylater.entities.VerificationRequest;
 import com.syrol.paylater.enums.Status;
-import com.syrol.paylater.pojos.APIResponse;
-import com.syrol.paylater.pojos.UserCredRequest;
-import com.syrol.paylater.pojos.UserRequest;
-import com.syrol.paylater.pojos.UserVerificationRequest;
+import com.syrol.paylater.pojos.*;
 import com.syrol.paylater.repositories.UserRepository;
 import com.syrol.paylater.repositories.VerificationRepository;
 import com.syrol.paylater.util.App;
@@ -46,15 +43,17 @@ public class MessagingService implements Serializable {
         app.print("" + recipient);
         app.print("" + textMessage);
         try {
+            String path=smsBaseURL
+                    + "?user=" + username
+                    + "&pass=" + password
+                    + "&sender=" + sender
+                    + "&message=" + textMessage
+                    + "&mobile=" + recipient
+                    + "&flash=0";
+            app.print(path);
             HttpEntity<String> entity = new HttpEntity<String>(app.getHTTPHeaders());
-            ResponseEntity<String> response = rest.exchange(smsBaseURL
-                            + "?user=" + username
-                            + "&pass=" + password
-                            + "&sender=" + sender
-                            + "&message=" + textMessage
-                            + "&mobile=" + recipient
-                            + "&flash=0"
-                    , HttpMethod.POST, entity, String.class);
+            ResponseEntity<String> response = rest.exchange(path
+                    , HttpMethod.GET, entity, String.class);
 
             app.print("is success: " + response.getStatusCode().is2xxSuccessful());
             app.print("Status: " + response.getStatusCode());
@@ -111,17 +110,17 @@ public class MessagingService implements Serializable {
         }
     }
 
-    public APIResponse generateAndSendOTPWithoutAuth(UserRequest request) {
+    public APIResponse generateAndSendOTPWithoutAuth(VerifyPhoneNumberRequest request) {
         app.print(request);
-        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
-            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        if(request.getMobileNumber().startsWith("0") && app.validNumber(request.getMobileNumber())){
+            request.setMobileNumber(request.getMobileNumber().replaceFirst("0","+234"));
         }
-        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getUsername()).orElse(null);
+        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getMobileNumber()).orElse(null);
         Long otp = app.generateOTP();
         if (existingVerificationRequest != null) {
 
             existingVerificationRequest.setVerificationCode(String.valueOf(otp));
-            existingVerificationRequest.setUsername(request.getUsername());
+            existingVerificationRequest.setUsername(request.getMobileNumber());
             existingVerificationRequest.setCreatedDate(new Date());
             verificationRepository.save(existingVerificationRequest);
             //send SMS
@@ -135,7 +134,7 @@ public class MessagingService implements Serializable {
         } else {
             VerificationRequest verificationRequest = new VerificationRequest();
             verificationRequest.setVerificationCode(String.valueOf(otp));
-            verificationRequest.setUsername(request.getUsername());
+            verificationRequest.setUsername(request.getMobileNumber());
             verificationRequest.setCreatedDate(new Date());
             verificationRepository.save(verificationRequest);
             //send SMS
