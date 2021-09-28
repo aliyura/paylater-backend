@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 public class PasswordChangeRequest<T> {
     private String username;
     private String newPassword;
-    private String otp;
+    private Long otp;
 }

@@ -18,7 +18,7 @@ public class VerificationRequest implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
     String username;
-    String verificationCode;
+    Long verificationCode;
     @Temporal(TemporalType.TIMESTAMP)
     Date createdDate;
 }

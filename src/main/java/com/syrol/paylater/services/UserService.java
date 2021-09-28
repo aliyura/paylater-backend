@@ -186,11 +186,11 @@ public class UserService implements Serializable {
     }
 
     public APIResponse verifyUser(UserVerificationRequest request) {
-        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
-            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        if(request.getMobileNumber().startsWith("0") && app.validNumber(request.getMobileNumber())){
+            request.setMobileNumber(request.getMobileNumber().replaceFirst("0","+234"));
         }
-        User user = userRepository.findByMobile(request.getUsername()).orElse(
-                userRepository.findByEmail(request.getUsername()).orElse(null)
+        User user = userRepository.findByMobile(request.getMobileNumber()).orElse(
+                userRepository.findByEmail(request.getMobileNumber()).orElse(null)
         );
         if (user != null) {
             app.print(user);

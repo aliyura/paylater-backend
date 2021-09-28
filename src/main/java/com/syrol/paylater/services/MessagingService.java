@@ -83,7 +83,7 @@ public class MessagingService implements Serializable {
         Long otp = app.generateOTP();
         if (existingVerificationRequest != null) {
 
-            existingVerificationRequest.setVerificationCode(String.valueOf(otp));
+            existingVerificationRequest.setVerificationCode(otp);
             existingVerificationRequest.setUsername(request.getUsername());
             existingVerificationRequest.setCreatedDate(new Date());
             verificationRepository.save(existingVerificationRequest);
@@ -97,7 +97,7 @@ public class MessagingService implements Serializable {
 
         } else {
             VerificationRequest verificationRequest = new VerificationRequest();
-            verificationRequest.setVerificationCode(String.valueOf(otp));
+            verificationRequest.setVerificationCode(otp);
             verificationRequest.setUsername(request.getUsername());
             verificationRequest.setCreatedDate(new Date());
             verificationRepository.save(verificationRequest);
@@ -110,17 +110,17 @@ public class MessagingService implements Serializable {
         }
     }
 
-    public APIResponse generateAndSendOTPWithoutAuth(UserRequest request) {
+    public APIResponse generateAndSendOTPWithoutAuth(VerifyPhoneNumberRequest request) {
         app.print(request);
-        if(request.getUsername().startsWith("0") && app.validNumber(request.getUsername())){
-            request.setUsername(request.getUsername().replaceFirst("0","+234"));
+        if(request.getMobileNumber().startsWith("0") && app.validNumber(request.getMobileNumber())){
+            request.setMobileNumber(request.getMobileNumber().replaceFirst("0","+234"));
         }
-        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getUsername()).orElse(null);
+        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(request.getMobileNumber()).orElse(null);
         Long otp = app.generateOTP();
         if (existingVerificationRequest != null) {
 
-            existingVerificationRequest.setVerificationCode(String.valueOf(otp));
-            existingVerificationRequest.setUsername(request.getUsername());
+            existingVerificationRequest.setVerificationCode(otp);
+            existingVerificationRequest.setUsername(request.getMobileNumber());
             existingVerificationRequest.setCreatedDate(new Date());
             verificationRepository.save(existingVerificationRequest);
             //send SMS
@@ -133,8 +133,8 @@ public class MessagingService implements Serializable {
 
         } else {
             VerificationRequest verificationRequest = new VerificationRequest();
-            verificationRequest.setVerificationCode(String.valueOf(otp));
-            verificationRequest.setUsername(request.getUsername());
+            verificationRequest.setVerificationCode(otp);
+            verificationRequest.setUsername(request.getMobileNumber());
             verificationRequest.setCreatedDate(new Date());
             verificationRepository.save(verificationRequest);
             //send SMS
@@ -148,15 +148,14 @@ public class MessagingService implements Serializable {
 
     public APIResponse verifyOTPWithoutAuth(UserVerificationRequest verificationRequest) {
         app.print(verificationRequest);
-        if(verificationRequest.getUsername().startsWith("0") && app.validNumber(verificationRequest.getUsername())){
-            verificationRequest.setUsername(verificationRequest.getUsername().replaceFirst("0","+234"));
+        if(verificationRequest.getMobileNumber().startsWith("0") && app.validNumber(verificationRequest.getMobileNumber())){
+            verificationRequest.setMobileNumber(verificationRequest.getMobileNumber().replaceFirst("0","+234"));
         }
-        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(verificationRequest.getUsername()).orElse(null);
+        VerificationRequest existingVerificationRequest = verificationRepository.findByUsername(verificationRequest.getMobileNumber()).orElse(null);
         if (existingVerificationRequest != null) {
 
             app.print("Requested OTP:");
             app.print(verificationRequest);
-
             app.print("Generated OTP");
             app.print(existingVerificationRequest);
 

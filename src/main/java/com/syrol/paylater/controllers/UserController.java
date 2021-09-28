@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @PostMapping("user/verify/phone_number")
-    public APIResponse<User> validatePhoneNumber(@RequestBody UserRequest userRequest){
-        return messagingService.generateAndSendOTPWithoutAuth(userRequest);
+    public APIResponse<User> validatePhoneNumber(@RequestBody VerifyPhoneNumberRequest request){
+        return messagingService.generateAndSendOTPWithoutAuth(request);
     }
     @PostMapping("user/validate/otp")
     public APIResponse<User> VerifyPhoneNumber(@RequestBody UserVerificationRequest verificationRequest){
