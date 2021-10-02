@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="aliyura (generated)" id="187654678869-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+        <createTable tableName="products">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="productsPK"/>
+            </column>
+            <column name="rate" type="DOUBLE"/>
+            <column name="item_id" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="product_type" type="VARCHAR(255)"/>
+            <column name="vendor_id" type="VARCHAR(255)"/>
+            <column name="reorder_level" type="VARCHAR(255)"/>
+            <column name="sku" type="VARCHAR(255)"/>
+            <column name="inventory_account_id" type="VARCHAR(255)"/>
+           <column name="thumbnail" type="VARCHAR(255)"/>
+            <column name="images" type="VARCHAR(255)"/>
+            <column name="unit" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="tax_percentage" type="BIGINT"/>
+            <column name="initial_stock" type="VARCHAR(255)"/>
+            <column name="initial_stock_rate" type="VARCHAR(255)"/>
+            <column name="created_by_username" type="VARCHAR(255)"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="datetime"/>
+            <column name="created_date" type="datetime"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

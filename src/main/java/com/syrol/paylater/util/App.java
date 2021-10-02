@@ -76,7 +76,10 @@ public class App {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return email.matches(regex);
     }
-
+    public String makeUIID() {
+        UUID timebaseUUID = Generators.timeBasedGenerator().generate();
+        return timebaseUUID.toString();
+    }
     public boolean validNumber(String number) {
         if (number.startsWith("+234"))
            number= number.replace("+234", "0");

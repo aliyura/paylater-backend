@@ -104,7 +104,6 @@ public class OrderService {
                     if (request.getDeliveryMethod().equals(OrderDeliveryMethod.HOME_DELIVERY))
                         deliveryFee = 500;
 
-
                     Order orderRequest=app.getMapper().convertValue(request,Order.class);
                     totalAmount = totalAmount + deliveryFee;
                     orderRequest.setAmount(totalAmount);
