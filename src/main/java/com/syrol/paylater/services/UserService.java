@@ -50,17 +50,8 @@ public class UserService implements Serializable {
             return response.failure("Mobile Number Required <mobile>!");
         else if (!app.validNumber(user.getMobile()))
             return response.failure("Invalid Mobile Number <mobile>!");
-        else if (user.getBvn()==null)
-            return response.failure("BVN Required <bvn>!");
-        else if (!app.validateBVN(user.getBvn()))
-            return response.failure("Invalid BVN <bvn>!");
-        else if (user.getDob()==null)
-            return response.failure("Date of Birth Required <dob>!");
-        else if (user.getGender()==null)
-            return response.failure("Gender Required <gender>!");
         else if (user.getPassword() == null)
             return response.failure("User Password Required <password>!");
-
         else {
 
             User userByEmail = userRepository.findByEmail(user.getEmail()).orElse(null);
