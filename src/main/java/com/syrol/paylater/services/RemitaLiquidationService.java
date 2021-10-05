@@ -26,7 +26,7 @@ import java.util.Date;
 @RefreshScope
 @Service
 @RequiredArgsConstructor
-public class LiquidationService {
+public class RemitaLiquidationService {
 
     private final App app;
     private final AuthDetails authDetails;
