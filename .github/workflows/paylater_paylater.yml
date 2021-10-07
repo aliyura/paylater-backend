@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
        PAYLATER_ENV: prod
-       PAYLATER_DB_USER: lenos_user
-       PAYLATER_DB_PASS: Lenos@1994
+       PAYLATER_DB_USERNAME: lenos_user
+       PAYLATER_DB_PASSWORD: Lenos@1994
        PAYLATER_ADMIN_USER: aliyura
        PAYLATER_ADMIN_PASS: Rabs@1994
        PAYLATER_TWILIO_NUMBER: +12243026369
