@@ -1,0 +1,71 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy JAR app to Azure Web App - paylater
+
+on:
+  push:
+    branches:
+      - paylater
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+       PAYLATER_ENV: prod
+       PAYLATER_DB_USERNAME: lenos_user
+       PAYLATER_DB_PASSWORD: Lenos@1994
+       PAYLATER_ADMIN_USER: aliyura
+       PAYLATER_ADMIN_PASS: Rabs@1994
+       PAYLATER_TWILIO_NUMBER: +12243026369
+       PAYLATER_TWILIO_TOKEN: 6ddb3dba8963812daf0bacef37005bc2
+       PAYLATER_TWILIO_ID: ACc40sqlvahy7iosxnsqt3k4d34ef1992f4ee102d14d52327775
+       PAYLATER_CLOUD_AWS_CREDENTIALS_ACCESSKEY: AKIAVKPRRBOTPNHGTHJH
+       PAYLATER_CLOUD_AWS_CREDENTIALS_SECRETKEY: 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
+       PAYLATER_CLOUD_AWS_REGION_STATIC: us-east-1
+       PAYLATER_CLOUD_AWS_BUCKET_NAME: lenos
+       PAYLATER_CRC_USERNAME: 221sbsupp
+       PAYLATER_CRC_PASSWORD: pass@1234
+       PAYLATER_PAYSTACK_TOKEN: sk_test_b9bef36b197f8be4c12b908641c1d606cb467d30
+       PAYLATER_SMS_USERNAME: paylater
+       PAYLATER_SMS_PASSWORD: BZXcpXrD
+       
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'paylater'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_203AD3D1E92B4F0C80436813683C0063 }}
+          package: '*.jar'
